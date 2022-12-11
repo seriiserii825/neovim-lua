@@ -92,6 +92,7 @@ return packer.startup(function(use)
   -- use("jayp0521/mason-null-ls.nvim") -- bridges gap b/w mason & null-ls
 
   use{'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+  use "mhartington/formatter.nvim"
 
   -- auto closing
   use("windwp/nvim-autopairs") -- autoclose parens, brackets, quotes, etc...
