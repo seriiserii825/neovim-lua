@@ -85,6 +85,12 @@ lspconfig["cssls"].setup({
   on_attach = on_attach,
 })
 
+
+lspconfig["tsserver"].setup {
+  capabilities = capabilities,
+  single_file_support = true
+}
+
 -- configure emmet language server
 lspconfig["emmet_ls"].setup({
   capabilities = capabilities,
