@@ -104,7 +104,7 @@ return packer.startup(function(use)
   use("goolord/alpha-nvim")
   use("ahmedkhalf/project.nvim")
   use("Pocco81/auto-save.nvim")
-
+  use "lukas-reineke/indent-blankline.nvim"
   if packer_bootstrap then
     require("packer").sync()
   end
