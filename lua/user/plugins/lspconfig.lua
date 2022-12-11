@@ -20,6 +20,7 @@ local on_attach = function(client, bufnr)
   -- set keybinds
   keymap.set("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts) -- got to declaration
   keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts) -- go to implementation
+  keymap.set("n", "lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts) -- go to implementation
   keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
 
@@ -80,6 +81,13 @@ lspconfig["cssls"].setup({
 lspconfig["tsserver"].setup {
   capabilities = capabilities,
   single_file_support = true
+}
+
+lspconfig["vuels"].setup{
+  filetypes = {"vue"},
+  on_attach = function(client)
+    client.resolved_capabilities.document_formatting = true
+  end;
 }
 
 -- configure emmet language server
