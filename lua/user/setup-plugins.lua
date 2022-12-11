@@ -13,12 +13,12 @@ local packer_bootstrap = ensure_packer() -- true if packer was just installed
 
 -- autocommand that reloads neovim and installs/updates/removes plugins
 -- when file is saved
--- vim.cmd([[ 
---   augroup packer_user_config
---     autocmd!
---     autocmd BufWritePost setup-plugins.lua source <afile> | PackerSync
---   augroup end
--- ]])
+vim.cmd([[ 
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost setup-plugins.lua source <afile> | PackerSync
+  augroup end
+]])
 
 
 -- import packer safely
@@ -83,7 +83,7 @@ return packer.startup(function(use)
   use("williamboman/mason-lspconfig.nvim") -- bridges gap b/w mason & lspconfig
 
   -- configuring lsp servers
-  use({ "glepnir/lspsaga.nvim", branch = "main" }) -- enhanced lsp uis
+  use("glepnir/lspsaga.nvim")
   use("jose-elias-alvarez/typescript.nvim") -- additional functionality for typescript server (e.g. rename file & update imports)
   -- use("onsails/lspkind.nvim") -- vs-code like icons for autocompletion
 
