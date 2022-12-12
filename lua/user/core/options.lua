@@ -42,3 +42,14 @@ opt.iskeyword:append("-") -- consider string-string as whole word
 
 --opt.mkdp_theme = 'dark'
 vim.g['mkdp_theme'] = 'dark'
+
+-- Highlight on yank
+vim.api.nvim_exec(
+  [[
+  augroup YankHighlight
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+  augroup end
+]],
+  false
+)

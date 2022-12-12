@@ -34,7 +34,7 @@ return packer.startup(function(use)
   use("nvim-lua/plenary.nvim") -- lua functions that many plugins use
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
   use("phanviet/vim-monokai-pro") -- preferred colorscheme
-
+  use 'terryma/vim-multiple-cursors'
   --jjuse("christoomey/vim-tmux-navigator") -- tmux & split window navigation
 
   -- use("szw/vim-maximizer") -- maximizes and restores current window
