@@ -53,3 +53,6 @@ vim.api.nvim_exec(
 ]],
   false
 )
+
+-- format on save
+vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]

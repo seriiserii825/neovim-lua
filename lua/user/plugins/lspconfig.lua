@@ -23,7 +23,7 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- got to declaration
   keymap.set("n", "gi", vim.lsp.buf.implementation, opts) -- go to implementation
   keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts) -- go to implementation
-  keymap.set("n", "lf", vim.lsp.buf.format, opts) -- go to implementation
+  -- keymap.set("n", "lf", vim.lsp.buf.format, opts) -- go to implementation
   keymap.set("n", "K", vim.lsp.buf.hover, opts) -- go to implementation
 
   -- if client.server_capabilities.document_formatting then
@@ -77,6 +77,7 @@ lspconfig["intelephense"].setup({
 lspconfig["cssls"].setup({
   capabilities = capabilities,
   on_attach = on_attach,
+  filetypes = { "scss", "css" },
 })
 
 

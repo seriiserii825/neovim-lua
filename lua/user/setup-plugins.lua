@@ -32,7 +32,8 @@ return packer.startup(function(use)
   -- packer can manage itself
   use("wbthomason/packer.nvim")
   use("nvim-lua/plenary.nvim") -- lua functions that many plugins use
-  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
+  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install",
+    setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
   use("phanviet/vim-monokai-pro") -- preferred colorscheme
   use 'terryma/vim-multiple-cursors'
   --jjuse("christoomey/vim-tmux-navigator") -- tmux & split window navigation
@@ -40,7 +41,8 @@ return packer.startup(function(use)
   -- use("szw/vim-maximizer") -- maximizes and restores current window
   use("justinmk/vim-sneak")
   use 'mattn/emmet-vim'
-
+  use('jose-elias-alvarez/null-ls.nvim')
+  use('MunifTanjim/prettier.nvim')
   -- essential plugins
   use("tpope/vim-surround") -- add, delete, change surroundings (it's awesome)
   -- use("vim-scripts/ReplaceWithRegister") -- replace with register contents using motion (gr + motion)
@@ -61,8 +63,8 @@ return packer.startup(function(use)
   -- use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" }) -- dependency for better sorting performance
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.0',
-  -- or                            , branch = '0.1.x',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    -- or                            , branch = '0.1.x',
+    requires = { { 'nvim-lua/plenary.nvim' } }
   }
 
   use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons" })
@@ -92,7 +94,7 @@ return packer.startup(function(use)
   -- use("jose-elias-alvarez/null-ls.nvim") -- configure formatters & linters
   -- use("jayp0521/mason-null-ls.nvim") -- bridges gap b/w mason & null-ls
 
-  use{'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use "mhartington/formatter.nvim"
 
   -- auto closing
