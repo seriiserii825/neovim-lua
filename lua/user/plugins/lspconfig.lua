@@ -18,11 +18,13 @@ local on_attach = function(client, bufnr)
   local opts = { noremap = true, silent = true, buffer = bufnr }
 
   -- set keybinds
-  keymap.set("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts) -- got to declaration
-  keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts) -- go to implementation
-  keymap.set("n", "lf", "<cmd>lua vim.lsp.buf.format()<CR>", opts) -- go to implementation
-  keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
-
+  keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- rename
+  keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts) -- code action
+  keymap.set("n", "gd", vim.lsp.buf.definition, opts) -- got to declaration
+  keymap.set("n", "gi", vim.lsp.buf.implementation, opts) -- go to implementation
+  keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts) -- go to implementation
+  keymap.set("n", "lf", vim.lsp.buf.format, opts) -- go to implementation
+  keymap.set("n", "K", vim.lsp.buf.hover, opts) -- go to implementation
 
   -- if client.server_capabilities.document_formatting then
   --   vim.api.nvim_command [[augroup Format]]
@@ -83,8 +85,8 @@ lspconfig["tsserver"].setup {
   single_file_support = true
 }
 
-lspconfig["vuels"].setup{
-  filetypes = {"vue"},
+lspconfig["vuels"].setup {
+  filetypes = { "vue" },
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = true
   end;
