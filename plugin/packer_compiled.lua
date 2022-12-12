@@ -258,6 +258,11 @@ _G.packer_plugins = {
     path = "/home/serii/.local/share/nvim/site/pack/packer/start/ultisnips",
     url = "https://github.com/SirVer/ultisnips"
   },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/home/serii/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
   ["vim-monokai-pro"] = {
     loaded = true,
     path = "/home/serii/.local/share/nvim/site/pack/packer/start/vim-monokai-pro",

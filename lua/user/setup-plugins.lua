@@ -106,6 +106,7 @@ return packer.startup(function(use)
 
   -- git integration
   use("lewis6991/gitsigns.nvim") -- show line modifications on left hand side
+  use("tpope/vim-fugitive")
   use("akinsho/toggleterm.nvim")
   use("goolord/alpha-nvim")
   use("ahmedkhalf/project.nvim")

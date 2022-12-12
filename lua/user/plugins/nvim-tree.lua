@@ -73,8 +73,8 @@ nvim_tree.setup {
         default = "",
         symlink = "",
         folder = {
-          arrow_open = icons.ui.ArrowOpen,
-          arrow_closed = icons.ui.ArrowClosed,
+          arrow_closed = "", -- arrow when folder is closed
+          arrow_open = "", -- arrow when folder is open
           default = "",
           open = "",
           empty = "",
