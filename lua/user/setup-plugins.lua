@@ -82,6 +82,7 @@ return packer.startup(function(use)
   use("rafamadriz/friendly-snippets") -- useful snippets
   use('SirVer/ultisnips')
   use('honza/vim-snippets')
+  -- use("quangnguyen30192/cmp-nvim-ultisnips")
 
   -- managing & installing lsp servers, linters & formatters
   use("williamboman/mason.nvim") -- in charge of managing lsp servers, linters & formatters

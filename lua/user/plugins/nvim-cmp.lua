@@ -17,8 +17,7 @@ if not lspkind_status then
 end
 
 vim.cmd [[
-let g:UltiSnipsJumpForwardTrigger='<Tab>'
-let g:UltiSnipsJumpBackwardTrigger='<S-Tab>'
+let g:UltiSnipsExpandTrigger='<C-j>'
 ]]
 
 vim.opt.completeopt = "menu,menuone,noselect"
@@ -30,8 +29,8 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-    ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-    ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
+    ["<Tab>"] = cmp.mapping.select_next_item(), -- next suggestion
+    ["<S-Tab>"] = cmp.mapping.select_prev_item(), -- previous suggestion
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
@@ -40,7 +39,6 @@ cmp.setup({
   }),
   -- sources for autocompletion
   sources = cmp.config.sources({
-    { name = "luasnip" }, -- snippets
     { name = "nvim_lsp" }, -- lsp
     { name = "buffer" }, -- text within current buffer
     { name = "path" }, -- file system paths
