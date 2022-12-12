@@ -6,7 +6,7 @@ local keymap = vim.keymap -- for conciseness
 ---------------------
 -- General Keymaps
 ---------------------
-
+vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
 -- use jk to exit insert mode
 keymap.set("i", "jj", "<ESC>")
 

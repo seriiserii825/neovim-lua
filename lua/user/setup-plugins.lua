@@ -39,6 +39,7 @@ return packer.startup(function(use)
 
   -- use("szw/vim-maximizer") -- maximizes and restores current window
   use("justinmk/vim-sneak")
+  use 'mattn/emmet-vim'
 
   -- essential plugins
   use("tpope/vim-surround") -- add, delete, change surroundings (it's awesome)
@@ -74,9 +75,9 @@ return packer.startup(function(use)
   use("neovim/nvim-lspconfig") -- easily configure language servers
 
   -- snippets
-  -- use("L3MON4D3/LuaSnip") -- snippet engine
-  -- use("saadparwaiz1/cmp_luasnip") -- for autocompletion
-  -- use("rafamadriz/friendly-snippets") -- useful snippets
+  use("L3MON4D3/LuaSnip") -- snippet engine
+  use("saadparwaiz1/cmp_luasnip") -- for autocompletion
+  use("rafamadriz/friendly-snippets") -- useful snippets
 
   -- managing & installing lsp servers, linters & formatters
   use("williamboman/mason.nvim") -- in charge of managing lsp servers, linters & formatters
@@ -85,7 +86,7 @@ return packer.startup(function(use)
   -- configuring lsp servers
   -- use("glepnir/lspsaga.nvim")
   use("jose-elias-alvarez/typescript.nvim") -- additional functionality for typescript server (e.g. rename file & update imports)
-  -- use("onsails/lspkind.nvim") -- vs-code like icons for autocompletion
+  use("onsails/lspkind.nvim") -- vs-code like icons for autocompletion
 
   -- formatting & linting
   -- use("jose-elias-alvarez/null-ls.nvim") -- configure formatters & linters
