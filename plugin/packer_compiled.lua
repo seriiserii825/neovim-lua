@@ -253,6 +253,11 @@ _G.packer_plugins = {
     path = "/home/serii/.local/share/nvim/site/pack/packer/start/typescript.nvim",
     url = "https://github.com/jose-elias-alvarez/typescript.nvim"
   },
+  ultisnips = {
+    loaded = true,
+    path = "/home/serii/.local/share/nvim/site/pack/packer/start/ultisnips",
+    url = "https://github.com/SirVer/ultisnips"
+  },
   ["vim-monokai-pro"] = {
     loaded = true,
     path = "/home/serii/.local/share/nvim/site/pack/packer/start/vim-monokai-pro",
@@ -267,6 +272,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/serii/.local/share/nvim/site/pack/packer/start/vim-sneak",
     url = "https://github.com/justinmk/vim-sneak"
+  },
+  ["vim-snippets"] = {
+    loaded = true,
+    path = "/home/serii/.local/share/nvim/site/pack/packer/start/vim-snippets",
+    url = "https://github.com/honza/vim-snippets"
   },
   ["vim-surround"] = {
     loaded = true,
