@@ -38,7 +38,21 @@ return packer.startup(function(use)
   use 'terryma/vim-multiple-cursors'
   --jjuse("christoomey/vim-tmux-navigator") -- tmux & split window navigation
 
+  -- use "simrat39/symbols-outline.nvim"
   -- use("szw/vim-maximizer") -- maximizes and restores current window
+  --
+  -- use "github/copilot.vim"
+  -- use {
+  --   "zbirenbaum/copilot.lua",
+  --   event = { "VimEnter" },
+  --   config = function()
+  --     vim.defer_fn(function()
+  --       require "user.copilot"
+  --     end, 100)
+  --   end,
+  -- }
+  --
+  -- use "zbirenbaum/copilot-cmp"
   use("justinmk/vim-sneak")
   use 'mattn/emmet-vim'
   use('jose-elias-alvarez/null-ls.nvim')
@@ -66,9 +80,8 @@ return packer.startup(function(use)
     -- or                            , branch = '0.1.x',
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
-
   use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons" })
-
+  use('norcalli/nvim-colorizer.lua')
   -- autocompletion
   use("hrsh7th/nvim-cmp") -- completion plugin
   use("hrsh7th/cmp-buffer") -- source for text in buffer
