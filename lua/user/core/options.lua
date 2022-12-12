@@ -50,9 +50,9 @@ vim.api.nvim_exec(
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup end
-]],
+]] ,
   false
 )
 
 -- format on save
-vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]
+-- vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]]

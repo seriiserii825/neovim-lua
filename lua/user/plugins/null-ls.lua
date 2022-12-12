@@ -30,24 +30,3 @@ null_ls.setup({
     end
   end,
 })
-
-local prettier = require("prettier")
-
-prettier.setup({
-  bin = 'prettier', -- or `'prettierd'` (v0.22+)
-  filetypes = {
-    "css",
-    "graphql",
-    "html",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "less",
-    "markdown",
-    "scss",
-    "php",
-    "typescript",
-    "typescriptreact",
-    "yaml",
-  },
-})

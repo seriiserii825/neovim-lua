@@ -36,8 +36,8 @@ keymap.set("n", "<leader>tp", ":tabp<CR>") --  go to previous tab
 
 -- " formatting in normal mode
 -- nmap <Leader>f <Plug>(prettier-format)
-keymap.set("n", "<M-l>", "<Plug>(prettier-format)") --  go to previous tab
-keymap.set("x", "<M-l>", "<Plug>(prettier-format)") --  go to previous tab
+keymap.set("n", "<M-l>", ":Prettier<CR>") --  go to previous tab
+keymap.set("x", "<M-l>", ":Prettier<CR>") --  go to previous tab
 
 ----------------------
 -- Plugin Keybinds
