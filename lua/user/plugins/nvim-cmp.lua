@@ -25,7 +25,7 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-    ["<C->"] = cmp.mapping.select_next_item(), -- next suggestion
+    ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
     ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
