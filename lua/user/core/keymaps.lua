@@ -10,6 +10,11 @@ vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true })
 -- use jk to exit insert mode
 keymap.set("i", "jj", "<ESC>")
 
+-- Snippets
+vim.cmd [[
+let g:UltiSnipsExpandTrigger='<Tab>'
+]]
+
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>")
 
