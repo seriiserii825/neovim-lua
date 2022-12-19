@@ -38,6 +38,7 @@ return packer.startup(function(use)
   use 'terryma/vim-multiple-cursors'
   --jjuse("christoomey/vim-tmux-navigator") -- tmux & split window navigation
 
+  use 'jwalton512/vim-blade'
   -- use "simrat39/symbols-outline.nvim"
   -- use("szw/vim-maximizer") -- maximizes and restores current window
   --
