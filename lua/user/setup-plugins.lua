@@ -42,7 +42,8 @@ return packer.startup(function(use)
   -- use "simrat39/symbols-outline.nvim"
   -- use("szw/vim-maximizer") -- maximizes and restores current window
   --
-  -- use "github/copilot.vim"
+  use "github/copilot.vim"
+
   -- use {
   --   "zbirenbaum/copilot.lua",
   --   event = { "VimEnter" },
