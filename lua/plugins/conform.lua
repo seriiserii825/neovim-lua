@@ -10,6 +10,7 @@ return {
 
       local prettier_fts = {
         "html",
+        "htmlangular", -- Angular component templates (*.component.html) get this filetype, not "html"
         "css",
         "scss",
         "json",
