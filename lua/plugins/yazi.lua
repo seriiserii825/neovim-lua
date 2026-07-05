@@ -2,6 +2,9 @@ return {
   {
     "mikavilpas/yazi.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    -- yazi.nvim ships its own lazy.lua spec with cmd-only triggers; force eager
+    -- loading so our <leader>e / <leader>cw keymaps actually get registered.
+    lazy = false,
     config = function()
       require("yazi").setup({
         open_for_directories = false,
