@@ -9,7 +9,13 @@ return {
       vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
       vim.g.UltiSnipsJumpBackwardTrigger = "<S-b>"
 
-      vim.g.UltiSnipsSnippetDirectories = { "UltiSnips", "/home/serii/Documents/Apps/nvim/UltiSnips" }
+      -- reuse snippets from the vimscript build if it's present on this machine
+      local dirs = { "UltiSnips" }
+      local old_snippets = "/home/serii/Documents/Apps/nvim/UltiSnips"
+      if vim.fn.isdirectory(old_snippets) == 1 then
+        table.insert(dirs, old_snippets)
+      end
+      vim.g.UltiSnipsSnippetDirectories = dirs
       vim.g.UltiSnipsFiletypeHierarchy = {
         ["php.blade"] = { "php", "html", "blade" },
       }
