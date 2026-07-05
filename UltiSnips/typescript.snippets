@@ -1,0 +1,107 @@
+snippet cnsl "console.log('')" i
+	console.log($1, "$1");
+endsnippet
+
+snippet cnst "console.table" i
+	console.table($1);
+endsnippet
+
+snippet ed "export default function" b
+export default {}
+endsnippet
+
+snippet edf "export default function" b
+export default function $1(){
+$2
+}
+endsnippet
+
+snippet sto "settimeout" b
+setTimeout(() => {
+		$2
+		}, ${1:1000});
+endsnippet
+
+snippet gfixed "gsap fixed" b
+import gsap from 'gsap';
+export default function $1() {
+	let tl = gsap.timeline();
+	tl.from('.logo-svg-left svg', {
+opacity: 0,
+scale: 300,
+duration: 1.5,
+ease: "power4.out"
+});
+}
+endsnippet
+
+snippet gscroll "gsap scroll" b
+import gsap from 'gsap';
+import ScrollTrigger from "gsap/ScrollTrigger";
+export default function $1() {
+	gsap.registerPlugin(ScrollTrigger);
+  let tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".services",
+      start: "top 80%",
+      markers: true
+    },
+  });
+	tl.from('.logo-svg-left svg', {
+opacity: 0,
+scale: 300,
+duration: 1.5,
+ease: "power4.out"
+});
+}
+endsnippet
+
+snippet gtl "gsap timeline" b
+tl.from("$1", {
+	opacity: 0,
+	x: 50,
+	duration: 1.5,
+	ease: "power4.out",
+});
+endsnippet
+
+snippet gtld "gsap timeline with delay" b
+tl.from("$1", {
+	opacity: 0,
+	x: 50,
+	duration: 1.5,
+	ease: "power4.out",
+}, "-=1.5");
+endsnippet
+
+snippet swp "swiper" b
+import Swiper from "swiper";
+import { Autoplay, Pagination } from "swiper/modules";
+
+export default function customSlider() {
+  const swiper = new Swiper(".swiper", {
+    slidesPerView: 1.6,
+    spaceBetween: 0,
+    loop: true,
+    centeredSlides: true,
+    // autoplay: {
+    //   delay: 2500,
+    //   disableOnInteraction: false,
+    // },
+    speed: 1500,
+    modules: [Autoplay, Pagination],
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      320: {
+        slidesPerView: 1,
+      },
+      576: {
+        slidesPerView: 1.6,
+      }
+    }
+  });
+}
+endsnippet

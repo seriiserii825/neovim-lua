@@ -9,13 +9,11 @@ return {
       vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
       vim.g.UltiSnipsJumpBackwardTrigger = "<S-b>"
 
-      -- reuse snippets from the vimscript build if it's present on this machine
-      local dirs = { "UltiSnips" }
-      local old_snippets = "/home/serii/Documents/Apps/nvim/UltiSnips"
-      if vim.fn.isdirectory(old_snippets) == 1 then
-        table.insert(dirs, old_snippets)
-      end
-      vim.g.UltiSnipsSnippetDirectories = dirs
+      -- UltiSnips/ in this repo is a byte-for-byte copy of the vimscript
+      -- build's snippets (kept in sync manually) -- self-contained on
+      -- purpose, so this build doesn't depend on the other repo's absolute
+      -- path existing on the machine (e.g. a work laptop that only has this repo).
+      vim.g.UltiSnipsSnippetDirectories = { "UltiSnips" }
       vim.g.UltiSnipsFiletypeHierarchy = {
         ["php.blade"] = { "php", "html", "blade" },
       }

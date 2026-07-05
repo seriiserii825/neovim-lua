@@ -1,0 +1,245 @@
+extends css, scss
+
+snippet z1 "z index 1" b
+z-index: 1;
+endsnippet
+
+snippet hv "hover" b
+&:hover {
+	$1
+}
+endsnippet
+
+snippet mwa "margin auto max width" b
+margin: 0 auto $2;
+max-width: $1rem;
+endsnippet
+
+snippet pz2 "z index 2" b
+position: relative;
+z-index: 2;
+endsnippet
+
+snippet ft "first of type" b
+&:first-of-type {
+	$1
+}
+endsnippet
+
+snippet lt "last of type" b
+&:last-of-type {
+	$1
+}
+endsnippet
+
+snippet nt "nth of type" b
+&:nth-of-type($1) {
+	$2
+}
+endsnippet
+
+snippet nlt "not last of type" b
+&:not(:last-of-type) {
+	$1
+}
+endsnippet
+
+snippet nft "not first of type" b
+&:not(:first-of-type) {
+	$1
+}
+endsnippet
+
+snippet gr "grid custom"
+&__$1 {
+display: flex;
+flex-wrap: wrap;
+margin: 0 -$2rem;
+}
+&__$3 {
+margin: 0 $2rem $4rem;
+flex: 0 0 calc($5% - $6rem);
+}
+endsnippet
+snippet flc "flex calc"
+flex: 0 0 calc(100% / $1 - $2);
+endsnippet
+
+snippet bf "Description" b
+&::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: $1;
+	height: $1;
+}
+endsnippet
+
+snippet af "After" b
+&::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+endsnippet
+
+snippet dfc "dfc"
+display: flex;
+justify-content: center;
+align-items: center;
+endsnippet
+
+snippet dfb "dfb"
+display: flex;
+justify-content: space-between;
+endsnippet
+
+snippet dfbc "dfbc"
+display: flex;
+justify-content: space-between;
+align-items: center;
+endsnippet
+
+snippet mcus "mcus"
+@media screen and (max-width: $1px) {
+	$2
+}
+endsnippet
+
+snippet mc12 "mc12"
+@media screen and (max-width: 1200px) {
+	$1
+}
+endsnippet
+
+snippet mc9 "mc9"
+@media screen and (max-width: 992px) {
+	$1
+}
+endsnippet
+
+snippet mc7 "mc7"
+@media screen and (max-width: 768px) {
+	$1
+}
+endsnippet
+
+snippet mc5 "mc5"
+@media screen and (max-width: 576px) {
+	$1
+}
+endsnippet
+
+snippet mw "mw"
+max-width: $1
+endsnippet
+
+snippet lts "lts"
+letter-spacing: $1;
+endsnippet
+
+snippet pa "pa"
+position: absolute;
+top: 0;
+left: 0;
+display: block;
+width: 100%;
+height: 100%;
+endsnippet
+
+snippet pao "pao"
+position: absolute;
+top: 0;
+left: 0;
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+endsnippet
+
+snippet padfc "padfc"
+position: absolute;
+top: 0;
+left: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
+endsnippet
+
+snippet tn "tn"
+transition: all .$1s ease;
+endsnippet
+
+snippet trf "trf"
+transform: translate(-50%, -50%);
+endsnippet
+
+snippet trfy "trfy"
+transform: translateY(-50%);
+endsnippet
+
+snippet trfx "trfx"
+transform: translateX(-50%);
+endsnippet
+
+snippet trfsc "trfsc"
+transform: scale($1);
+endsnippet
+
+snippet im "im" i
+!important
+endsnippet
+
+snippet bdrs "bdrs" i
+border-radius: $1;
+endsnippet
+
+snippet bdrs5 "bdrs5" i
+border-radius: 50%;
+endsnippet
+
+snippet trs "trs" i
+transition: all .$1s;
+endsnippet
+
+snippet trfc "trf center" 
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+endsnippet
+
+snippet vs "vs" i
+var(--$1)
+endsnippet
+
+snippet br "border red"
+* {
+	border: 1px solid red;
+}
+endsnippet
+	
+snippet vaa "var(--accent)"
+var(--accent$1)$2
+endsnippet
+
+snippet vac "var(--contrast)"
+var(--contrast$1)$2
+endsnippet
+
+snippet dfc "dfc"
+display: flex;
+justify-content: center;
+align-items: center;
+endsnippet
+
+snippet trf "trf"
+transform: translate(-50%, -50%);
+endsnippet

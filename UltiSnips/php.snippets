@@ -1,0 +1,332 @@
+snippet php "<?php ?>" ib
+<?php $1 ?>
+endsnippet
+
+snippet v "<?php echo $1 ?>" i
+<?php echo $1; ?>
+endsnippet
+
+snippet gtd "get_template_directory" ib
+require get_template_directory() . '/$1';
+endsnippet
+
+snippet rapi "php api" b
+<?php
+if (!defined('ABSPATH')) exit;
+
+function $1()
+{
+  register_rest_route('$2/v1', '/$3', [
+    'methods'             => WP_REST_SERVER::READABLE,
+    'permission_callback' => '__return_true',
+    'callback' => '$4',
+  ]);
+}
+add_action('rest_api_init', '$1');
+
+function $4()
+{
+$5
+}
+endsnippet
+
+snippet wpdebug "wpdebug" b
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
+endsnippet
+
+snippet tg "telegram" ib
+<a href="tg://resolve?domain=<?php echo $1 ?>">$2</a>
+endsnippet
+
+snippet vid "video" b
+<video autoplay muted loop playsinline>
+	<source src="<?php echo $$1; ?>" type="video/mp4">
+	Your browser does not support the video tag.
+</video>
+endsnippet
+
+snippet mgi "my_get_image_id" b
+$$1 = my_get_image_id($$2['$1']);
+endsnippet
+
+snippet cp "create_picture" b
+<?php create_picture(my_get_image_id($1)) ?>
+endsnippet
+
+snippet cpi "create_picture" b
+<?php create_picture(my_get_image_id($1), '`!v eval('getreg("i")')`__$2') ?>
+endsnippet
+
+snippet wlink "watsapp link" i
+https://wa.me/39<?php echo clear_phone($1); ?>
+endsnippet
+
+snippet pf "public function" b
+public function $1($2)
+{
+	$3
+}
+endsnippet
+
+snippet frci "php foreach $items" b
+<?php foreach($items as $item): ?>
+	$1
+<?php endforeach; ?>
+endsnippet
+
+snippet gpl "get_the_permalink" i
+<?php echo get_the_permalink($1); ?>
+endsnippet
+
+snippet gtpt "get_the_post_thumbnail_url" i
+get_the_post_thumbnail_url($1, $2)
+endsnippet
+
+snippet tb "target='_blank'" i
+target="_blank" rel="noopener noreferrer"
+endsnippet
+
+snippet dv "block tag i__field [content]" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+	$3
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet dvv "block tag i__field echo $var" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+	<?php echo $$2; ?>
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet ic "simple html tag with register i and class" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">$3</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet icv "tag i__field extra-class [content]" b
+<${1:div} class="`!v eval('getreg("i")')`__$2 $4">$3</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet iv "tag i__field echo $var" b
+<${1:div} class="`!v eval('getreg("i")')`__$2"><?php echo $$2; ?></${1/(\w+).*/$1/}>
+endsnippet
+
+snippet ivv "tag i__field field echo $var" b
+<${1:div} class="`!v eval('getreg("i")')`__$2 $2"><?php echo $$2; ?></${1/(\w+).*/$1/}>
+endsnippet
+
+snippet imc "img with class" b
+<img src="<?php echo $3['url'];?>" class="$1__$2"  alt="<?php echo $3['alt']; ?>" />
+endsnippet
+
+snippet im "img without class" b
+<img src="<?php echo $1['url'];?>"  alt="<?php echo $1['alt']; ?>" />
+endsnippet
+
+snippet ctr "container" b
+<div class="container">
+	$1
+</div>
+endsnippet
+
+snippet atel "a tel" ib
+<a href="tel:<?php echo clear_phone($$1); ?>" target="_blank"><?php echo $$1; ?></a>
+endsnippet
+
+snippet wa "a whatsapp" ib
+<a href="https://wa.me/39<?php echo clear_phone($1); ?>" target="_blank" rel="noopener noreferrer"><?php echo $1; ?></a>
+endsnippet
+
+snippet amail "a email" ib
+<a href="mailto:<?php echo $1; ?>" target="_blank" rel="noopener noreferrer"><?php echo $1; ?></a>
+endsnippet
+
+snippet ablank "a target blank" ib
+<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>
+endsnippet
+
+snippet pv "<?php echo $1 ?>" i
+<?php echo $1; ?>
+endsnippet
+
+snippet strong "strong" i
+<strong>$1</strong>
+endsnippet
+
+snippet loop "loop"
+<?php if ( have_posts() ): ?>
+	<?php while ( have_posts() ): ?>
+		<?php the_post(); ?>
+		$1
+	<?php endwhile; ?>
+	<?php wp_reset_postdata(); ?>
+<?php endif; ?>
+endsnippet
+
+snippet looph "looph"
+<?php if ( $1->have_posts() ): ?>
+	<?php while ( $1->have_posts() ): ?>
+		<?php $1->the_post(); ?>
+		$2
+	<?php endwhile; ?>
+	<?php wp_reset_postdata(); ?>
+<?php endif; ?>
+endsnippet
+
+snippet acf "acf" i
+<?php echo $1['$2'];?>
+endsnippet
+
+snippet ahref "ahref" i
+<a href="#">$1</a>
+endsnippet
+
+snippet df "df" 
+<?php
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+?>
+endsnippet
+
+snippet frc "frc"
+<?php foreach($1 as $2): ?>
+	$3
+<?php endforeach; ?>
+endsnippet
+
+
+snippet gf "gf" i
+get_field( '$1' );
+endsnippet
+
+snippet gft "gft" i
+get_field( '$1', 'options' );
+endsnippet
+
+snippet if "if"
+<?php if($1): ?>
+	$2
+<?php else: ?>
+	$3
+<?php endif; ?>
+endsnippet
+
+snippet gtdu "gtdu" i
+get_template_directory_uri(); 
+endsnippet
+
+snippet gtp "gtp" 
+<?php get_template_part( 'template-parts/$1' ); ?>
+endsnippet
+
+snippet pv "pv" i
+<?php echo $1;?>
+endsnippet
+
+snippet wpq "wpq"
+<?php $1 = new WP_Query([
+	'post_type' => '$2',
+	'posts_per_page' => $3
+]); ?>
+endsnippet
+
+snippet wpqt "wpqt"
+<?php $1 = new WP_Query([
+	'post_type' => '$2',
+	'posts_pear_page' => $3,
+	'tax_query' => array(
+			array(
+					'taxonomy' => '$4',
+					'field' => 'slug',
+					'terms' => '$5'
+			)
+	)
+]); ?>
+endsnippet
+
+
+snippet pv "pv" i
+<?php echo $1;?>
+endsnippet
+
+snippet rq "rq"
+<?php require_once __DIR__.'./$1'; ?>
+endsnippet
+
+snippet cnsl "console.log('')" i
+	console.log($1, "$1");
+endsnippet
+	
+snippet dqs "dqs" i 
+	document.querySelector('$1');
+endsnippet
+
+snippet sqref "sqref" i 
+	references: {
+		model: {
+			tableName: "$1",
+		},
+		key: "id",
+	}
+endsnippet
+
+snippet sqv "sqv" i 
+	validate: {
+		notEmpty: true,
+		minLength: 3,
+	},
+endsnippet
+
+snippet tst "tst" i 
+	defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+endsnippet
+
+snippet dqsa "dqsa" i 
+	document.querySelectorAll('$1');
+endsnippet
+
+snippet impv "impv" i
+@import "~assets/scss/partials/variables";
+@import "~assets/scss/partials/mixins";
+endsnippet
+
+snippet jqr "jqr" b
+jQuery(document).ready(function($) {
+	$1
+});
+endsnippet
+
+snippet trycatch "trycatch"
+try {
+	$1
+} catch (error) {
+	$2
+}
+endsnippet
+
+snippet log_array "log_array" i
+$1.forEach(item => {
+	console.log(JSON.stringify(item, null, 4));
+});
+endsnippet
+
+snippet logjs "logjs" i
+	console.log(JSON.stringify($1, null, 4));
+endsnippet
+
+snippet swp "swipper"
+<div class="swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">Slide 1</div>
+  </div>
+  <div class="swiper-pagination"></div>
+
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+  <div class="swiper-scrollbar"></div>
+</div>
+endsnippet

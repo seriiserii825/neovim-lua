@@ -1,0 +1,299 @@
+extends css, scss
+snippet vdo "video tag" b
+<video class="page-intro__bg" muted loop autoplay playsinline>
+  <source :src="`${$1video}?ngsw-bypass=true`" type="video/mp4" />
+</video>
+endsnippet
+
+snippet loadwh "loading width hegith" b
+loading="lazy"
+width="$1"
+height="$2" 
+endsnippet
+
+snippet domp "dompurify v-html"
+import DOMPurify from 'dompurify';
+const safe$1 = DOMPurify.sanitize($2);
+endsnippet
+
+snippet tal "text align left" i
+text-align: left;
+endsnippet
+
+snippet swp "swipper"
+<div class="swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">Slide 1</div>
+  </div>
+  <div class="swiper-pagination"></div>
+
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+  <div class="swiper-scrollbar"></div>
+</div>
+endsnippet
+
+snippet faw "font awesome icon" i
+<font-awesome-icon :icon="['$1', '$2']" />
+endsnippet
+
+snippet use_query "useQuery import"
+const { data: $1, loading } = useQuery<$2>(
+	$3.$4
+)
+endsnippet
+
+snippet use_form "useForm import"
+const { form, send, pending } = useForm<$1, $2>(
+	$3,
+	{
+		$4
+	},
+	() => {
+		useSweetAlert('success', 'Logged in successfully!')
+		navigateTo('/')
+	}
+)
+endsnippet
+
+snippet vif "v-if with data" i
+ v-if="data.$1"
+endsnippet
+
+snippet dpi
+interface Props {
+	$1${2:?}: $3;
+}
+
+const { $1${4: = "Default title"} } = defineProps<Props>();
+endsnippet
+
+snippet dp
+const props = defineProps({
+  $1: {
+    type: $2 as PropType<$3>,
+    required: true,
+  },
+});
+endsnippet
+
+snippet pt "prop with type"
+$1: {
+  type: $2 as PropType<$3>,
+  required: true
+}
+endsnippet
+
+
+snippet vst
+<style lang="scss">
+$1
+</style>
+endsnippet
+
+snippet dv "block tag i__field [content]" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+	$3
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet dvv "block tag i__field {{ var }}" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+	{{ $2 }}
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet ic "simple html tag with register i and class" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">$3</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet icv "tag i__field extra-class [content]" b
+<${1:div} class="`!v eval('getreg("i")')`__$2 $4">$3</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet iv "tag i__field {{ var }}" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">{{ $2 }}</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet ivv "tag i__field field {{ var }}" b
+<${1:div} class="`!v eval('getreg("i")')`__$2 $3">{{ $2 }}</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet im "img with class" b
+<img :src="$3.url" class="$1__$2" :alt="$3.alt" />
+endsnippet
+
+snippet ctr "container" b
+<div class="container">
+	$1
+</div>
+endsnippet
+
+snippet vbasec "vue base component script setup ts"
+<script setup lang="ts">
+</script>
+
+<template>
+  <div class="$1">
+
+  </div>
+</template>
+
+<style lang="scss">
+.$1 {
+
+}
+</style>
+endsnippet
+
+snippet dem
+const emits = defineEmits<{
+	(e: '$1', $2: $3): void;
+}>();
+endsnippet
+
+snippet vtemplate
+<script setup lang="ts">
+</script>
+
+<template>
+  <div class="$1">
+
+  </div>
+</template>
+endsnippet
+
+snippet vtemplatec
+<script setup lang="ts">
+</script>
+
+<template>
+  <div class="$1">
+
+  </div>
+</template>
+
+<style lang="scss">
+.$1 {
+
+}
+</style>
+endsnippet
+
+snippet dfc "dfc"
+display: flex;
+justify-content: center;
+align-items: center;
+endsnippet
+
+snippet vs "vs"
+var(--$1);
+endsnippet
+
+snippet dfb "dfb"
+display: flex;
+justify-content: space-between;
+endsnippet
+
+snippet dfc "dfc"
+display: flex;
+justify-content: center;
+align-items: center;
+endsnippet
+
+snippet mcus "mcus"
+@media screen and (max-width: $1px) {
+	$2
+}
+endsnippet
+
+snippet mc12 "mc12"
+@media screen and (max-width: 1200px) {
+	$1
+}
+endsnippet
+
+snippet mc9 "mc9"
+@media screen and (max-width: 992px) {
+	$1
+}
+endsnippet
+
+snippet mc7 "mc7"
+@media screen and (max-width: 768px) {
+	$1
+}
+endsnippet
+
+snippet mc5 "mc5"
+@media screen and (max-width: 576px) {
+	$1
+}
+endsnippet
+
+snippet mw "mw"
+max-width: $1
+endsnippet
+
+snippet lts "lts"
+letter-spacing: $1;
+endsnippet
+
+snippet pa "pa"
+position: absolute;
+top: 0;
+left: 0;
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+endsnippet
+
+snippet tn "tn"
+transition: all .$1s ease;
+endsnippet
+
+snippet trf "trf"
+transform: translate(-50%, -50%);
+endsnippet
+
+snippet trfy "trfy"
+transform: translateY(-50%);
+endsnippet
+
+snippet trfx "trfx"
+transform: translateX(-50%);
+endsnippet
+
+snippet trfsc "trfsc"
+transform: scale($1);
+endsnippet
+
+snippet im "im" i
+!important
+endsnippet
+
+snippet bdrs "bdrs" i
+border-radius: $1;
+endsnippet
+
+snippet bdrs5 "bdrs5" i
+border-radius: 50%;
+endsnippet
+
+snippet trs "trs" i
+transition: all .$1s;
+endsnippet
+
+snippet trf "trf" i
+transform: translate(-50%, -50%);
+endsnippet
+
+snippet mcush "mcush"
+@media screen and (max-height: $1px) {
+	$2
+}
+endsnippet
+
+

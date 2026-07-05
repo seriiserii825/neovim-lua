@@ -1,0 +1,71 @@
+snippet ghtml_class "generate html class from sentence"
+html class in english from text "$1" behind give me examples, just class name, in one line sep by comma
+endsnippet
+
+snippet vdo "video tag" b
+<video class="page-intro__bg" muted loop autoplay playsinline>
+  <source src="<?php echo $video . '?ngsw-bypass=true'; ?>" type="video/mp4" />
+</video>
+endsnippet
+
+snippet gcommit "generate commit summary"
+Using the commit messages above, rewrite them into multiple professional English worklog sentences.
+
+Requirements:
+
+Write multiple separate sentences one after another
+Do not use bullet points
+Do not use numbering
+Each sentence should describe a meaningful completed task, fix, improvement, or feature
+Group related commits together naturally
+Rewrite technical or messy commit messages into clean professional English
+Avoid mentioning git, commits, branches, or merges
+The result should look like a professional daily developer report
+$1
+endsnippet
+
+snippet t "simple html tag"
+<${1:div}>
+  Hello
+</$1>
+endsnippet
+
+snippet divreg "simple html tag"
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+  
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet todo "Todo reminder" b
+<!-- TODO: `echo $USER` ${1:desc} `!v strftime('%c')`  -->
+endsnippet
+
+snippet tb "target='_blank'" i
+target="_blank"
+endsnippet
+
+snippet dvi "simple html tag with register i and class" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">$3</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet dv "simple html tag with register i and class" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+	$3
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet dvv "simple html tag with register i and class" b
+<${1:div} class="`!v eval('getreg("i")')`__$2">
+	<?php echo $$2; ?>
+</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet im "img with class" b
+<img src="<?php echo $3;?>" class="$1__$2">
+endsnippet
+
+snippet ctr "container" b
+<div class="container">
+	$1
+</div>
+endsnippet
