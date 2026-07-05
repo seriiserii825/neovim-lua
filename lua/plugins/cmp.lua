@@ -22,11 +22,30 @@ return {
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = cmp.mapping(function(fallback)
+          -- popup navigation lives on <C-j>/<C-k>, matching the CoC build's
+          -- coc#pum#next/prev binding (see modules/coc.vim)
+          ["<C-j>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
-            elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-              vim.fn["UltiSnips#ExpandSnippet"]()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<C-k>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          -- Tab never calls UltiSnips#ExpandSnippet directly: with triggers like
+          -- "v" and "dv" both defined, UltiSnips can't tell which one you mean
+          -- from raw suffix matching and throws up a "Confirm" chooser. Going
+          -- through cmp's own (prefix-filtered, unambiguous) candidate list and
+          -- confirming it instead sidesteps that entirely.
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.confirm({ select = true })
             elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
               vim.fn["UltiSnips#JumpForwards"]()
             else
@@ -34,9 +53,7 @@ return {
             end
           end, { "i", "s" }),
           ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+            if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
               vim.fn["UltiSnips#JumpBackwards"]()
             else
               fallback()
