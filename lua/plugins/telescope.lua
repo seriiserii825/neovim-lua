@@ -8,10 +8,11 @@ return {
 
       telescope.setup({})
 
-      vim.keymap.set("n", "<leader>f", builtin.find_files, { desc = "Find files" })
-      vim.keymap.set("n", "<leader>b", builtin.buffers, { desc = "Find buffers" })
-      vim.keymap.set("n", "<leader>g", builtin.live_grep, { desc = "Live grep" })
-      vim.keymap.set("n", "<leader>h", builtin.help_tags, { desc = "Help tags" })
+      -- moved under <leader>t: fzf.vim now owns <leader>f* (see fzf.lua) to match the old build's muscle memory
+      vim.keymap.set("n", "<leader>tf", builtin.find_files, { desc = "Telescope find files" })
+      vim.keymap.set("n", "<leader>tb", builtin.buffers, { desc = "Telescope buffers" })
+      vim.keymap.set("n", "<leader>tg", builtin.live_grep, { desc = "Telescope live grep" })
+      vim.keymap.set("n", "<leader>th", builtin.help_tags, { desc = "Telescope help tags" })
     end,
   },
 }

@@ -1,0 +1,8 @@
+require("config.functions.copy-lines")
+require("config.functions.delete-lines")
+require("config.functions.delete-empty-lines")
+require("config.functions.move-lines")
+require("config.functions.visual-lines")
+require("config.functions.yank-lines")
+require("config.functions.yank-string-at-line")
+require("config.functions.duplicate-lines-from")

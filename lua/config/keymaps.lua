@@ -82,3 +82,17 @@ map("n", "<C-Left>", ":vertical resize -2<CR>")
 map("n", "<C-Right>", ":vertical resize +2<CR>")
 
 map("i", "jj", "<Esc>")
+
+-- ported from settings.vim: select N lines up/down from the cursor, relative to it
+vim.api.nvim_create_user_command("VRel", function(opts)
+  local a1 = tonumber(opts.fargs[1])
+  local a2 = tonumber(opts.fargs[2])
+  local l1 = vim.fn.line(".") + a1
+  local l2 = vim.fn.line(".") + a2
+
+  if l1 > l2 then
+    vim.cmd(l1 .. "normal! V" .. l2 .. "G")
+  else
+    vim.cmd(l2 .. "normal! V" .. l1 .. "G")
+  end
+end, { nargs = "+" })

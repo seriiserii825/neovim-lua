@@ -49,7 +49,7 @@ return {
           map("n", "gi", vim.lsp.buf.implementation)
           map("n", "<leader>rn", vim.lsp.buf.rename)
           map("n", "<leader>ca", vim.lsp.buf.code_action)
-          map("n", "<leader>lf", function()
+          map("n", "<M-l>", function()
             vim.lsp.buf.format({ async = true })
           end)
           map("n", "[g", vim.diagnostic.goto_prev)
