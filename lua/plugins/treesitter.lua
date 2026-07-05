@@ -17,6 +17,7 @@ return {
           "vim",
           "vimdoc",
           "markdown",
+          "markdown_inline",
         },
         highlight = { enable = true },
         indent = { enable = true },

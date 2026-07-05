@@ -16,24 +16,11 @@ return {
         capabilities = capabilities,
       })
 
-      -- Angular needs to be pointed at its own bundled node_modules
-      -- (the language service ships inside the mason-installed package).
-      local angular_probe = ""
-      local ok, mason_registry = pcall(require, "mason-registry")
-      if ok and mason_registry.is_installed("angular-language-server") then
-        angular_probe = mason_registry.get_package("angular-language-server"):get_install_path() .. "/node_modules"
-      end
-
+      -- angularls ships its own default `cmd` (lsp/angularls.lua in nvim-lspconfig)
+      -- that resolves the correct node_modules paths via the ngserver binary itself,
+      -- so it doesn't need to be overridden here.
       vim.lsp.config("angularls", {
         capabilities = capabilities,
-        cmd = {
-          "ngserver",
-          "--stdio",
-          "--tsProbeLocations",
-          angular_probe,
-          "--ngProbeLocations",
-          angular_probe,
-        },
       })
 
       require("mason-lspconfig").setup({
@@ -62,7 +49,7 @@ return {
           map("n", "gi", vim.lsp.buf.implementation)
           map("n", "<leader>rn", vim.lsp.buf.rename)
           map("n", "<leader>ca", vim.lsp.buf.code_action)
-          map("n", "<leader>f", function()
+          map("n", "<leader>lf", function()
             vim.lsp.buf.format({ async = true })
           end)
           map("n", "[g", vim.diagnostic.goto_prev)
