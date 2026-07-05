@@ -6,18 +6,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A second, Lua-only Neovim configuration, built alongside the primary VimScript+CoC build at
 `/home/serii/Documents/Apps/nvim` (symlinked to `~/.config/nvim`). This build uses **lazy.nvim**
-as the plugin manager and **native LSP** (`nvim-lspconfig` + `mason.nvim`) instead of CoC.
+as the plugin manager and **native LSP** (`nvim-lspconfig` + `mason.nvim`) instead of CoC. This
+build is self-contained: its own `UltiSnips/` and `macros/` are committed here (copied
+byte-for-byte from the vimscript build once), so cloning just this repo on a new machine is
+enough — the vimscript build doesn't need to exist there too.
 
-It runs under a separate Neovim profile so both builds coexist without conflict:
+It runs under a separate Neovim profile (`NVIM_APPNAME=nvim-lua`), and as of now **this is the
+default** — `~/dotfiles/zsh_modules/zsh_default_editor` exports `NVIM_APPNAME=nvim-lua`
+globally, so plain `nvim` (and `$EDITOR`/`$VISUAL`) opens this build. To reach the old
+vimscript+CoC build explicitly, use the `nvim-coc` alias (`NVIM_APPNAME=nvim nvim`,
+`~/dotfiles/zsh_modules/zsh_aliases`). `nvim-lua` alias still works too, just redundant now.
 
-```bash
-NVIM_APPNAME=nvim-lua nvim
-```
-
-An `nvim-lua` shell alias for this is defined in `~/dotfiles/zsh_modules/zsh_aliases`.
 `~/.config/nvim-lua` is a symlink to this repo; data/state/cache live under
 `~/.local/share/nvim-lua`, `~/.local/state/nvim-lua`, `~/.local/cache/nvim-lua` (Neovim 0.9+
 `NVIM_APPNAME` convention) — fully isolated from the primary build.
+
+On a new machine (e.g. work laptop): clone this repo to `~/.config/nvim-lua` **before** the
+first `nvim` invocation (since `zsh_default_editor` will already point plain `nvim` at it once
+dotfiles are pulled). First launch bootstraps lazy.nvim and mason installs ts_ls/angularls/
+emmet_language_server/intelephense/prettier — needs internet, takes a couple minutes. Needed on
+`$PATH`: `git`, `node`+`npm`, `rg` (ripgrep, fzf.vim's default source), `yazi`, `lazygit`.
 
 ## Architecture
 
@@ -46,29 +54,43 @@ auto-loads every spec under `lua/plugins/*.lua`.
   register letters (`m`, `g`, `b`, `y`), so only one can be active at a time; swap the active
   `source` line in `macros.lua` to switch (python/blade/css sets are already copied in, just
   not sourced).
+- `UltiSnips/*.snippets` — same byte-for-byte-copy approach as `macros/`, copied from the
+  vimscript build's `UltiSnips/` once. Not symlinked/synced automatically — if you add/edit a
+  snippet in one build, copy it over manually to keep them in sync.
 
 ### LSP & formatting
 
-- **LSP**: `mason.nvim` + `mason-lspconfig.nvim` + `nvim-lspconfig`, configured for `ts_ls`
-  (TypeScript/JavaScript) and `angularls` (Angular). `angularls` uses nvim-lspconfig's *default*
-  `cmd` resolution (don't override it) — it walks the real `ngserver` binary path to find
-  `@angular/language-service`, which under mason's npm install ends up nested at
-  `node_modules/@angular/language-server/node_modules/@angular/language-service`, not the flat
-  `node_modules/@angular/language-service`.
-- Angular component templates (`*.component.html`) get filetype **`htmlangular`**, not `html` —
-  both need entries anywhere a filetype-keyed table (formatters, etc.) is built.
+- **LSP**: `mason.nvim` + `mason-lspconfig.nvim` + `nvim-lspconfig`, configured for:
+  - `ts_ls` (TypeScript/JavaScript) — plain defaults.
+  - `angularls` (Angular) — uses nvim-lspconfig's *default* `cmd` resolution (don't override
+    it) — it walks the real `ngserver` binary path to find `@angular/language-service`, which
+    under mason's npm install ends up nested at
+    `node_modules/@angular/language-server/node_modules/@angular/language-service`, not the
+    flat `node_modules/@angular/language-service`.
+  - `intelephense` (PHP/WordPress) — settings ported from the old build's `coc-settings.json`
+    (`environment.includePaths` for WP/WooCommerce/ACF core stubs, `format.enable`,
+    `diagnostics.*`). `filetypes` extended with `php.blade` (see next bullet).
+  - `emmet_language_server` (abbreviation completion) — `filetypes` extended beyond
+    nvim-lspconfig's default list with `php`/`blade`/`php.blade`/`markdown`, matching the old
+    build's `coc-emmet` + `emmet.includeLanguages` setting. `olrtg/nvim-emmet` (separate plugin,
+    `<leader>xe`) is a thin extra for wrap-in-abbreviation; it does **not** run the LSP itself.
+- Two filetype gotchas that anything filetype-keyed (LSP `filetypes`, conform formatters, etc.)
+  needs to account for:
+  - Angular component templates (`*.component.html`) get filetype **`htmlangular`**, not `html`.
+  - `*.blade.php` is force-set to filetype **`php.blade`** (see `ultisnips.lua`'s autocmd), not
+    plain `php`.
 - **Formatting**: `conform.nvim` + `prettier` (mason-installed fallback; prefers the project's
   own `node_modules/.bin/prettier` when present, so per-project `.prettierrc` overrides — e.g.
   `"parser": "angular"` for `*.html` — are honored). `format_on_save` is enabled, falling back
-  to `vim.lsp.buf.format` for filetypes with no prettier entry. Manual format: `<M-l>`.
+  to `vim.lsp.buf.format` for filetypes with no prettier entry (e.g. `php` → intelephense's own
+  formatter). Manual format: `<M-l>`.
 - **Snippets**: UltiSnips + vim-snippets (not LuaSnip — deliberately, to match the vimscript
-  build's snippet engine). `UltiSnipsSnippetDirectories` includes the local `UltiSnips/` dir and,
-  if present on the machine, the vimscript build's `UltiSnips/` directory too (existence-checked,
-  so this build doesn't break on a machine that doesn't have the other repo cloned).
-  `Tab`/`S-Tab` are driven through nvim-cmp, falling back to UltiSnips expand/jump.
+  build's snippet engine). Snippet files live in this repo's own `UltiSnips/` (see above).
+  Initial expansion goes through nvim-cmp's popup (`Tab` confirms the selected candidate), not a
+  raw `UltiSnips#ExpandSnippet()` call — see the cmp.lua note below for why.
 - **No CoC.** `coc.nvim` and its extensions are intentionally not installed — running both a
   CoC client and native LSP on the same buffers would produce duplicate diagnostics/completion.
-  If PHP or Python LSP support is needed here, add it as another native LSP server (mason +
+  If more language support is needed here, add it as another native LSP server (mason +
   nvim-lspconfig), not CoC.
 
 ### Plugin manager
@@ -88,6 +110,24 @@ vimscript-era auto-pairs throws `E716: Key not present in Dictionary: "rhs"` /
 `E121: Undefined variable: old_cr` on any buffer where other plugins register Lua-callback
 keymaps (no string `rhs`) — which is most of this config.
 
+**cmp.lua's `<Tab>` never calls `UltiSnips#ExpandSnippet()`/`CanExpandSnippet()` directly.**
+When two snippet triggers overlap by suffix (e.g. `php.snippets` has both `v` and `dv`),
+UltiSnips can't tell which one you mean from raw text-before-cursor matching and throws up a
+blocking `Confirm` chooser popup. Going through nvim-cmp's own (prefix-filtered) candidate list
+via `cmp-nvim-ultisnips` and confirming *that* sidesteps the ambiguity entirely — set
+`cmp_nvim_ultisnips`'s `show_snippets = "all"` too (not the default `"expandable"`, which asks
+UltiSnips the same ambiguous "what can expand here" question under the hood). Popup navigation
+is on `<C-j>`/`<C-k>` (matching the CoC build's `coc#pum#next/prev`), not `<Tab>` — `<Tab>`
+confirms the selected candidate immediately, or falls back to `UltiSnips#JumpForwards` for
+already-expanded placeholders, or a literal tab.
+
+**`copilot#Accept()` (bound to `<C-l>`, insert mode) must stay a real vimscript `:imap`,
+not a `vim.keymap.set` Lua string.** Its return value is a raw keystroke sequence
+(`<C-R><C-R>=...<CR>`, similar in spirit to the register macros) that Neovim's `<expr>`-mapping
+machinery re-feeds and expands; porting it through Lua string escaping mangled it into literal
+garbage bytes in the buffer. See `lua/plugins/copilot.lua` — it uses `vim.cmd([[imap ...]])`
+with the exact text from copilot.vim's own docs instead.
+
 ### Conventions (carried over from the vimscript build for muscle memory)
 
 - **Leader key**: `<Space>`. Indentation: 2 spaces. Relative numbers on in normal mode, off in
@@ -102,7 +142,15 @@ keymaps (no string `rhs`) — which is most of this config.
   `lazygit.nvim` (`<leader>lz`), `vim-fugitive` (no custom binds beyond fzf.vim's `fr/fc/fd/fm`).
 - **LSP keymaps**: `K` hover, `gd` definition, `gy` type definition, `gr` references,
   `gi` implementation, `<leader>rn` rename, `<leader>ca` code action, `<M-l>` format,
-  `[g`/`]g` diagnostics.
+  `[g`/`]g` diagnostics. Emmet wrap: `<leader>xe`.
+- **Buffers/windows** (`lua/plugins/bufferline.lua` — these live there, not `keymaps.lua`,
+  because in the vimscript build they're all defined in `modules/bufferline.vim`, sourced
+  *after* `keys/map-nvim.vim`, so they win over that file's own `<leader>w`/`<leader>z`):
+  `<S-h>/<S-l>` cycle buffers, `<M-S-h>/<M-S-l>` move buffer, `<leader>1..0` go to buffer N,
+  `<leader>qr/qa/qo` close right/others/all-but-current, `<leader>w` save **all** buffers
+  (`:wa`), `<leader>z` save-and-quit (`:wq`), `<leader>bo` `:only`, `<leader>br` reload current
+  buffer from disk keeping cursor position. The trailing-double-space cleanup that used to be
+  `<leader>z` in `map-nvim.vim` (shadowed there too) lives at `<leader>zs` here.
 - **Direct (no-leader) fenced-code-block mappings** (vim-surround based, count-prefixable):
   `ts`/`py`/`ph`/`mb`/`mj`/`my`/`ms`/`mg`/`mm`/`mv`/`mh`/`mc`/`mz`.
 - **Custom line functions** (`lua/config/functions/`): `<leader>lc` copy lines,
@@ -124,9 +172,11 @@ keymaps (no string `rhs`) — which is most of this config.
 
 ## Known machine-specific bits
 
-- `lua/plugins/ultisnips.lua` only adds the vimscript build's `UltiSnips/` directory if it
-  exists on the current machine (`isdirectory` check) — on a machine without that other repo
-  cloned, this build still works, just without those extra snippets.
+- `lua/plugins/lsp.lua`'s `intelephense` config has a hardcoded list of WordPress/WooCommerce/
+  ACF core paths under `/home/serii/Documents/...` (`environment.includePaths`) for better
+  completion/diagnostics in WP theme/plugin work. Harmless if missing on another machine
+  (intelephense just won't find them, no error) — update the paths if those projects live
+  somewhere else there.
 - `lua/plugins/dadbod.lua` has a local Postgres connection string (`g:dbs`) pointing at
   `localhost` with a personal dev password — harmless on any machine (it's just a saved
   connection preset), but worth knowing it's sitting in this file if the repo is ever made public.
