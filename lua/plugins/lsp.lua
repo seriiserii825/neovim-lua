@@ -23,8 +23,65 @@ return {
         capabilities = capabilities,
       })
 
+      -- Emmet abbreviation completion. Extends nvim-lspconfig's default filetypes
+      -- (astro/css/eruby/html/htmlangular/htmldjango/jsx/less/sass/scss/svelte/tsx/vue)
+      -- with the languages the old CoC build treated as html for emmet purposes
+      -- (coc-settings.json's emmet.includeLanguages: php/blade/blade.php/vue/markdown).
+      vim.lsp.config("emmet_language_server", {
+        capabilities = capabilities,
+        filetypes = {
+          "astro", "css", "eruby", "html", "htmlangular", "htmldjango",
+          "javascriptreact", "less", "sass", "scss", "svelte", "typescriptreact", "vue",
+          "php", "blade", "php.blade", "markdown",
+        },
+      })
+
+      -- PHP (WordPress). Mirrors the old CoC build's intelephense settings
+      -- (coc-settings.json): WordPress/plugin stubs for completion, format on
+      -- save enabled, and *.blade.php attached too (it's set to filetype
+      -- "php.blade" in ultisnips.lua, so the default {"php"} filetypes list
+      -- alone would miss it).
+      vim.lsp.config("intelephense", {
+        capabilities = capabilities,
+        filetypes = { "php", "php.blade" },
+        settings = {
+          intelephense = {
+            files = {
+              maxSize = 5000000,
+              exclude = {
+                "**/.git/**",
+                "**/.svn/**",
+                "**/.hg/**",
+                "**/CVS/**",
+                "**/.DS_Store/**",
+                "**/node_modules/**",
+                "**/bower_components/**",
+                "**/vendor/**/{Tests,tests}/**",
+                "**/.history/**",
+                "**/vendor/**/vendor/**",
+                "**/docker/**",
+              },
+            },
+            environment = {
+              includePaths = {
+                "/home/serii/Documents/plugins-wp/advanced-custom-fields-pro",
+                "/home/serii/Documents/wordpress/wordpress",
+                "/home/serii/Documents/wordpress/woocommerce",
+                "/home/serii/Documents/wordpress/wp-pagenavi",
+              },
+            },
+            format = { enable = true },
+            diagnostics = {
+              typeErrors = true,
+              unusedSymbols = true,
+              undefinedVariables = true,
+            },
+          },
+        },
+      })
+
       require("mason-lspconfig").setup({
-        ensure_installed = { "ts_ls", "angularls" },
+        ensure_installed = { "ts_ls", "angularls", "emmet_language_server", "intelephense" },
         automatic_enable = true,
       })
 

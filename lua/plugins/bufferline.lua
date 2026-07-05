@@ -41,11 +41,42 @@ return {
       map("n", "<M-S-h>", "<cmd>BufferLineMovePrev<CR>", { silent = true })
       map("n", "<leader>qr", "<cmd>BufferLineCloseRight<CR>", { silent = true })
       map("n", "<leader>qa", "<cmd>BufferLineCloseOther<CR>", { silent = true })
+      map("n", "<leader>qo", "<cmd>bp|sp|bn|bd<CR>", { silent = true })
+
+      -- these three live alongside the bufferline binds in the vimscript build
+      -- (modules/bufferline.vim), sourced after keys/map-nvim.vim -- so they win
+      -- over map-nvim.vim's own <leader>w/<leader>z (see keymaps.lua note).
+      map("n", "<leader>w", ":wa<CR>", { silent = true })
+      map("n", "<leader>bo", ":only<CR>", { silent = true })
+      map("n", "<leader>z", ":wq<CR>", { silent = true })
 
       for i = 1, 9 do
         map("n", "<leader>" .. i, "<cmd>BufferLineGoToBuffer " .. i .. "<CR>")
       end
       map("n", "<leader>0", "<cmd>BufferLineGoToBuffer 0<CR>")
+
+      -- reload the current buffer from disk (bdelete + edit), keeping cursor position
+      local function reload_current_buffer()
+        local file = vim.fn.expand("%:p")
+        local line = vim.fn.line(".")
+        local col = vim.fn.col(".")
+
+        if file == "" then
+          vim.notify("Current buffer has no file")
+          return
+        end
+
+        if vim.bo.modified then
+          vim.cmd("write")
+        end
+
+        vim.cmd("bdelete! " .. vim.fn.bufnr("%"))
+        vim.cmd("edit " .. vim.fn.fnameescape(file))
+
+        vim.fn.cursor(line, col)
+      end
+
+      map("n", "<leader>br", reload_current_buffer, { silent = true })
     end,
   },
 }

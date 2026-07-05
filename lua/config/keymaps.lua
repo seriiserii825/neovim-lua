@@ -1,6 +1,8 @@
 local map = vim.keymap.set
 
-map("n", "<leader>w", ":w<CR>")
+-- <leader>w and <leader>z are set in bufferline.lua (:wa and :wq) -- that's
+-- what's actually active in the vimscript build, since bufferline.vim is
+-- sourced after this file's vimscript equivalent (keys/map-nvim.vim) and wins.
 map("n", "<leader>q", ":q<CR>")
 
 map("n", "<C-h>", "<C-w>h")
@@ -40,8 +42,10 @@ map("n", "<leader>ns", ":set spell!<CR>", { silent = true })
 
 map("i", "<C-i>", "<C-r>=@i<CR>")
 
--- remove trailing spaces
-map("n", "<leader>z", [[:%s/\s\{2,}/ /g<CR>]], { silent = true })
+-- remove trailing spaces (was <leader>z in map-nvim.vim, but that's shadowed
+-- by bufferline.vim's <leader>z = :wq in the vimscript build; moved here to
+-- keep the feature reachable)
+map("n", "<leader>zs", [[:%s/\s\{2,}/ /g<CR>]], { silent = true })
 
 -- open current file in browser
 map("n", "<leader>ob", [[:w | !google-chrome-stable "%"<CR>]], { silent = true })
