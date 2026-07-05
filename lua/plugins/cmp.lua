@@ -11,7 +11,12 @@ return {
     config = function()
       local cmp = require("cmp")
 
-      require("cmp_nvim_ultisnips").setup({})
+      -- "all" lists every snippet for the filetype and lets cmp's own fuzzy
+      -- matching rank/filter by what you've typed; the default "expandable"
+      -- mode asks UltiSnips itself which snippets could expand right now,
+      -- which uses the same ambiguous suffix-matching that causes the
+      -- "Confirm" chooser popup (e.g. triggers "v" and "dv" both matching).
+      require("cmp_nvim_ultisnips").setup({ show_snippets = "all" })
 
       cmp.setup({
         snippet = {
