@@ -1,0 +1,5 @@
+{
+  // MD029: ordered list item prefix -- disabled to match the old CoC build's
+  // coc-settings.json markdownlint.config.
+  "MD029": false
+}
