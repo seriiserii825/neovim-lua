@@ -84,10 +84,12 @@ auto-loads every spec under `lua/plugins/*.lua`.
   `"parser": "angular"` for `*.html` — are honored). `format_on_save` is enabled, falling back
   to `vim.lsp.buf.format` for filetypes with no prettier entry (e.g. `php` → intelephense's own
   formatter). Manual format: `<M-l>`.
-- **Snippets**: UltiSnips + vim-snippets (not LuaSnip — deliberately, to match the vimscript
-  build's snippet engine). Snippet files live in this repo's own `UltiSnips/` (see above).
-  Initial expansion goes through nvim-cmp's popup (`Tab` confirms the selected candidate), not a
-  raw `UltiSnips#ExpandSnippet()` call — see the cmp.lua note below for why.
+- **Snippets**: UltiSnips + vim-snippets (not LuaSnip — LuaSnip has no built-in loader for the
+  UltiSnips `.snippets` file format, so switching engines would mean hand-rewriting every
+  snippet; not worth it just to fix the bug described below). Snippet files live in this repo's
+  own `UltiSnips/` (see above). Initial expansion goes through nvim-cmp's popup (`Tab` confirms
+  the selected candidate), not a raw `UltiSnips#ExpandSnippet()` call — see the cmp.lua note
+  below for why, including a bug in `cmp-nvim-ultisnips` itself that undermined this.
 - **No CoC.** `coc.nvim` and its extensions are intentionally not installed — running both a
   CoC client and native LSP on the same buffers would produce duplicate diagnostics/completion.
   If more language support is needed here, add it as another native LSP server (mason +
@@ -114,12 +116,20 @@ keymaps (no string `rhs`) — which is most of this config.
 When two snippet triggers overlap by suffix (e.g. `php.snippets` has both `v` and `dv`),
 UltiSnips can't tell which one you mean from raw text-before-cursor matching and throws up a
 blocking `Confirm` chooser popup. Going through nvim-cmp's own (prefix-filtered) candidate list
-via `cmp-nvim-ultisnips` and confirming *that* sidesteps the ambiguity entirely — set
+via `cmp-nvim-ultisnips` and confirming *that* is meant to sidestep the ambiguity entirely — set
 `cmp_nvim_ultisnips`'s `show_snippets = "all"` too (not the default `"expandable"`, which asks
-UltiSnips the same ambiguous "what can expand here" question under the hood). Popup navigation
-is on `<C-j>`/`<C-k>` (matching the CoC build's `coc#pum#next/prev`), not `<Tab>` — `<Tab>`
-confirms the selected candidate immediately, or falls back to `UltiSnips#JumpForwards` for
-already-expanded placeholders, or a literal tab.
+UltiSnips the same ambiguous "what can expand here" question under the hood).
+
+That alone isn't enough, though: `cmp-nvim-ultisnips`'s own `source:execute()`
+(`lua/cmp_nvim_ultisnips/source.lua`) ignores which candidate cmp actually resolved and just
+calls the raw `UltiSnips#ExpandSnippet()` on confirm anyway — silently reintroducing the exact
+same ambiguous chooser at confirm time, which can wedge the buffer/statusline (bufferline
+included) if you answer it mid-insert. `cmp.lua` patches `cmpu_source.execute` after requiring
+`cmp_nvim_ultisnips.source` to instead delete the just-inserted trigger text and expand the
+already-resolved `completion_item.snippet.value` directly via `UltiSnips#Anon` — no re-matching,
+no ambiguity, no popup. Popup navigation is on `<C-j>`/`<C-k>` (matching the CoC build's
+`coc#pum#next/prev`), not `<Tab>` — `<Tab>` confirms the selected candidate immediately, or falls
+back to `UltiSnips#JumpForwards` for already-expanded placeholders, or a literal tab.
 
 **`copilot#Accept()` (bound to `<C-l>`, insert mode) must stay a real vimscript `:imap`,
 not a `vim.keymap.set` Lua string.** Its return value is a raw keystroke sequence
