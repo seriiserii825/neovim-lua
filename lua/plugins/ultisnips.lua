@@ -3,9 +3,13 @@ return {
     "SirVer/ultisnips",
     dependencies = { "honza/vim-snippets" },
     init = function()
-      -- Tab/S-Tab are driven through nvim-cmp (see cmp.lua); these triggers stay
-      -- as a fallback for when the popup menu isn't visible.
-      vim.g.UltiSnipsExpandTrigger = "<Tab>"
+      -- Tab/S-Tab are driven entirely through nvim-cmp (see cmp.lua). No native
+      -- <Tab> expand trigger here on purpose: UltiSnips' own raw expand uses
+      -- ambiguous suffix matching (e.g. triggers "v" and "dv" both match) and
+      -- throws up a blocking "Confirm" chooser. cmp's own prefix-filtered
+      -- candidate list sidesteps that -- but only if nothing else claims <Tab>
+      -- first, so it must stay unbound here.
+      vim.g.UltiSnipsExpandTrigger = "<nop>"
       vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
       vim.g.UltiSnipsJumpBackwardTrigger = "<S-b>"
 

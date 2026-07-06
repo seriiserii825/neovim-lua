@@ -11,8 +11,29 @@ return {
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- TypeScript / JavaScript
+      -- TypeScript / JavaScript. Also attaches to *.vue files (with the
+      -- @vue/typescript-plugin loaded) since vue_ls itself only handles the
+      -- template/CSS side and forwards all <script> TS requests to this
+      -- server -- see lsp/vue_ls.lua's "hybrid mode" note in nvim-lspconfig.
+      local vue_typescript_plugin = vim.fn.stdpath("data")
+        .. "/mason/packages/vue-language-server/node_modules/@vue/typescript-plugin"
       vim.lsp.config("ts_ls", {
+        capabilities = capabilities,
+        filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+        init_options = {
+          plugins = {
+            {
+              name = "@vue/typescript-plugin",
+              location = vue_typescript_plugin,
+              languages = { "vue" },
+            },
+          },
+        },
+      })
+
+      -- Vue 3. Handles the template/CSS side of *.vue files; ts_ls (above)
+      -- handles the <script> side via the forwarded @vue/typescript-plugin.
+      vim.lsp.config("vue_ls", {
         capabilities = capabilities,
       })
 
@@ -81,7 +102,7 @@ return {
       })
 
       require("mason-lspconfig").setup({
-        ensure_installed = { "ts_ls", "angularls", "emmet_language_server", "intelephense" },
+        ensure_installed = { "ts_ls", "angularls", "emmet_language_server", "intelephense", "vue_ls" },
         automatic_enable = true,
       })
 
