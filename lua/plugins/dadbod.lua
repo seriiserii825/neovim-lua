@@ -1,6 +1,13 @@
 return {
   {
     "tpope/vim-dadbod",
+    -- vim-dadbod-completion's own after/plugin script calls require("cmp")
+    -- unconditionally at load, which -- since dadbod was eager -- forced
+    -- nvim-cmp (and ultisnips) to load on every startup regardless of their
+    -- own InsertEnter trigger. Gating the whole group behind cmd/ft means
+    -- that only actually happens when a DB buffer/command is in play.
+    cmd = { "DBUIToggle", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
+    ft = { "sql", "mysql", "plsql", "dbout" },
     dependencies = {
       "kristijanhusak/vim-dadbod-ui",
       "kristijanhusak/vim-dadbod-completion",

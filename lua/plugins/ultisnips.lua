@@ -2,6 +2,13 @@ return {
   {
     "SirVer/ultisnips",
     dependencies = { "honza/vim-snippets" },
+    -- plugin/UltiSnips.vim alone costs ~200ms+ sourcing on every startup
+    -- (scans all .snippets files); defer it to first insert since snippet
+    -- expansion is only ever needed in insert mode anyway. `init` below still
+    -- runs eagerly at startup (lazy.nvim always runs `init` immediately), so
+    -- the *.blade.php filetype autocmd and g:UltiSnips* globals are set up
+    -- before this ever matters.
+    event = "InsertEnter",
     init = function()
       -- Tab/S-Tab are driven entirely through nvim-cmp (see cmp.lua). No native
       -- <Tab> expand trigger here on purpose: UltiSnips' own raw expand uses

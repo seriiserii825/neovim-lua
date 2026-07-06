@@ -1,6 +1,10 @@
 return {
   {
     "hrsh7th/nvim-cmp",
+    -- Completion is only relevant in insert mode; deferring load here (and on
+    -- ultisnips.lua, same event) skips ~150ms+ of cmp/cmp-source requires on
+    -- every startup, moving them to the first InsertEnter instead.
+    event = "InsertEnter",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",

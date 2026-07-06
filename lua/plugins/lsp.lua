@@ -1,6 +1,18 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    -- mason.setup()/mason-lspconfig.setup() alone cost ~250ms+ (dozens of
+    -- mason-core.* requires) on every startup, even when editing a filetype
+    -- none of the configured servers (ts_ls/angularls/emmet/intelephense/
+    -- vue_ls) touch -- e.g. this repo's own *.lua files. Restricting to the
+    -- filetypes those servers actually attach to means opening a Lua/Python/
+    -- shell/etc buffer skips this whole cost entirely.
+    ft = {
+      "javascript", "javascriptreact", "typescript", "typescriptreact", "vue",
+      "html", "htmlangular", "htmldjango", "astro",
+      "css", "scss", "sass", "less", "eruby", "svelte",
+      "php", "blade", "php.blade", "markdown",
+    },
     dependencies = {
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
