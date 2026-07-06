@@ -26,7 +26,20 @@ return {
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          -- select = false: only confirm a completion if the user explicitly
+          -- picked one (via <C-j>/<C-k>). Otherwise <CR> just inserts a
+          -- newline, even while cmp's popup happens to be open with an
+          -- unselected candidate (e.g. emmet_language_server keeps a popup
+          -- alive between an expanded tag's open/close, like
+          -- <div class="x">|</div> — select = true used to auto-confirm
+          -- that stray candidate and duplicate the closing tag).
+          ["<CR>"] = cmp.mapping(function(fallback)
+            if cmp.visible() and cmp.get_active_entry() then
+              cmp.confirm({ select = false })
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
           -- popup navigation lives on <C-j>/<C-k>, matching the CoC build's
           -- coc#pum#next/prev binding (see modules/coc.vim)
           ["<C-j>"] = cmp.mapping(function(fallback)
