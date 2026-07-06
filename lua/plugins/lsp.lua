@@ -105,7 +105,7 @@ return {
             },
             format = { enable = true },
             diagnostics = {
-              typeErrors = true,
+              typeErrors = false,
               unusedSymbols = true,
               undefinedVariables = true,
             },
