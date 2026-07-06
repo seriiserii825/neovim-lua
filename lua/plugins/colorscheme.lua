@@ -6,7 +6,7 @@ return {
     config = function()
       require("nordic").setup({
         on_highlight = function(highlights)
-          highlights.Visual = { bg = "#3d59a1" }
+          highlights.Visual = { bg = "#2E4075" }
         end,
       })
       require("nordic").load()
