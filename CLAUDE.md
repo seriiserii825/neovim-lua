@@ -152,7 +152,10 @@ with the exact text from copilot.vim's own docs instead.
   `lazygit.nvim` (`<leader>lz`), `vim-fugitive` (no custom binds beyond fzf.vim's `fr/fc/fd/fm`).
 - **LSP keymaps**: `K` hover, `gd` definition, `gy` type definition, `gr` references,
   `gi` implementation, `<leader>rn` rename, `<leader>ca` code action, `<M-l>` format,
-  `[g`/`]g` diagnostics. Emmet wrap: `<leader>xe`.
+  `[g`/`]g` diagnostics, `<leader>cp` view diagnostic float under cursor, `<leader>ia`
+  fix all imports (addMissingImports → removeUnused → organizeImports, ts_ls-specific
+  code action kinds, ported from the old coc.vim build's `fix_all_imports()`). Emmet
+  wrap: `<leader>xe`.
 - **Buffers/windows** (`lua/plugins/bufferline.lua` — these live there, not `keymaps.lua`,
   because in the vimscript build they're all defined in `modules/bufferline.vim`, sourced
   *after* `keys/map-nvim.vim`, so they win over that file's own `<leader>w`/`<leader>z`):

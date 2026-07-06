@@ -132,6 +132,26 @@ return {
           end)
           map("n", "[g", vim.diagnostic.goto_prev)
           map("n", "]g", vim.diagnostic.goto_next)
+          map("n", "<leader>cp", vim.diagnostic.open_float)
+
+          -- Mirrors the old coc.vim build's fix_all_imports(): add missing
+          -- imports, then remove unused ones, then organize -- each step run
+          -- after the previous one's edit has actually applied, since these
+          -- are separate LSP requests/edits rather than one atomic action.
+          map("n", "<leader>ia", function()
+            local function apply_kind(kind, on_done)
+              vim.lsp.buf.code_action({
+                context = { only = { kind }, diagnostics = {} },
+                apply = true,
+              })
+              vim.defer_fn(on_done or function() end, 100)
+            end
+            apply_kind("source.addMissingImports.ts", function()
+              apply_kind("source.removeUnused.ts", function()
+                apply_kind("source.organizeImports")
+              end)
+            end)
+          end)
         end,
       })
     end,
