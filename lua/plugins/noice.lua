@@ -10,6 +10,11 @@ return {
             filter = { event = "msg_showmode" },
           },
         },
+        lsp = {
+          progress = {
+            enabled = false,
+          },
+        },
       })
     end,
   },
