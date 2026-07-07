@@ -5,11 +5,17 @@ return {
     config = function()
       local ok, mason_registry = pcall(require, "mason-registry")
       if ok then
-        for _, pkg in ipairs({ "prettier", "shfmt", "black" }) do
-          if not mason_registry.is_installed(pkg) then
-            mason_registry.get_package(pkg):install()
+        local function ensure_installed()
+          for _, pkg in ipairs({ "prettier", "shfmt", "black" }) do
+            if not mason_registry.is_installed(pkg) then
+              local pkg_ok, package = pcall(mason_registry.get_package, pkg)
+              if pkg_ok then
+                package:install()
+              end
+            end
           end
         end
+        mason_registry.refresh(ensure_installed)
       end
 
       local prettier_fts = {
@@ -35,6 +41,7 @@ return {
       formatters_by_ft.sh = { "shfmt" }
       formatters_by_ft.bash = { "shfmt" }
       formatters_by_ft.python = { "black" }
+      formatters_by_ft.xml = { "xmllint" }
 
       require("conform").setup({
         formatters_by_ft = formatters_by_ft,

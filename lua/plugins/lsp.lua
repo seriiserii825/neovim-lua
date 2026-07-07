@@ -11,7 +11,7 @@ return {
       "javascript", "javascriptreact", "typescript", "typescriptreact", "vue",
       "html", "htmlangular", "htmldjango", "astro",
       "css", "scss", "sass", "less", "eruby", "svelte",
-      "php", "blade", "php.blade", "markdown",
+      "php", "blade", "php.blade", "markdown", "xml",
     },
     dependencies = {
       "mason-org/mason.nvim",
@@ -113,8 +113,14 @@ return {
         },
       })
 
+      -- XML. nvim-lspconfig's default filetypes ({ "xml", "xsd", "xsl", "xslt",
+      -- "svg" }) are fine as-is, no override needed.
+      vim.lsp.config("lemminx", {
+        capabilities = capabilities,
+      })
+
       require("mason-lspconfig").setup({
-        ensure_installed = { "ts_ls", "angularls", "emmet_language_server", "intelephense", "vue_ls" },
+        ensure_installed = { "ts_ls", "angularls", "emmet_language_server", "intelephense", "vue_ls", "lemminx" },
         automatic_enable = true,
       })
 

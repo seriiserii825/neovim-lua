@@ -5,8 +5,15 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     config = function()
       local ok, mason_registry = pcall(require, "mason-registry")
-      if ok and not mason_registry.is_installed("markdownlint-cli2") then
-        mason_registry.get_package("markdownlint-cli2"):install()
+      if ok then
+        mason_registry.refresh(function()
+          if not mason_registry.is_installed("markdownlint-cli2") then
+            local pkg_ok, package = pcall(mason_registry.get_package, "markdownlint-cli2")
+            if pkg_ok then
+              package:install()
+            end
+          end
+        end)
       end
 
       local lint = require("lint")
