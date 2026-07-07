@@ -4,26 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-A second, Lua-only Neovim configuration, built alongside the primary VimScript+CoC build at
-`/home/serii/Documents/Apps/nvim` (symlinked to `~/.config/nvim`). This build uses **lazy.nvim**
-as the plugin manager and **native LSP** (`nvim-lspconfig` + `mason.nvim`) instead of CoC. This
-build is self-contained: its own `UltiSnips/` and `macros/` are committed here (copied
-byte-for-byte from the vimscript build once), so cloning just this repo on a new machine is
-enough — the vimscript build doesn't need to exist there too.
+A Lua-only Neovim configuration using **lazy.nvim** as the plugin manager and **native LSP**
+(`nvim-lspconfig` + `mason.nvim`) instead of CoC. This is now the only Neovim config in use — the
+old VimScript+CoC build (formerly at `/home/serii/Documents/Apps/nvim`, moved to `nvim-coc`) is
+retired and no longer used. This build is self-contained: its own `UltiSnips/` and `macros/` are
+committed here (copied byte-for-byte from that old build once), so cloning just this repo on a
+new machine is enough.
 
-It runs under a separate Neovim profile (`NVIM_APPNAME=nvim-lua`), and as of now **this is the
-default** — `~/dotfiles/zsh_modules/zsh_default_editor` exports `NVIM_APPNAME=nvim-lua`
-globally, so plain `nvim` (and `$EDITOR`/`$VISUAL`) opens this build. To reach the old
-vimscript+CoC build explicitly, use the `nvim-coc` alias (`NVIM_APPNAME=nvim nvim`,
-`~/dotfiles/zsh_modules/zsh_aliases`). `nvim-lua` alias still works too, just redundant now.
+It runs under the default Neovim profile — `~/.config/nvim` is a symlink to this repo, plain
+`nvim` (and `$EDITOR`/`$VISUAL`) just works, no `NVIM_APPNAME` needed. Data/state/cache live under
+the default `~/.local/share/nvim`, `~/.local/state/nvim`, `~/.cache/nvim`.
 
-`~/.config/nvim-lua` is a symlink to this repo; data/state/cache live under
-`~/.local/share/nvim-lua`, `~/.local/state/nvim-lua`, `~/.local/cache/nvim-lua` (Neovim 0.9+
-`NVIM_APPNAME` convention) — fully isolated from the primary build.
-
-On a new machine (e.g. work laptop): clone this repo to `~/.config/nvim-lua` **before** the
-first `nvim` invocation (since `zsh_default_editor` will already point plain `nvim` at it once
-dotfiles are pulled). First launch bootstraps lazy.nvim and mason installs ts_ls/angularls/
+On a new machine (e.g. work laptop): clone this repo to `~/.config/nvim` before the first `nvim`
+invocation. First launch bootstraps lazy.nvim and mason installs ts_ls/angularls/
 emmet_language_server/intelephense/prettier — needs internet, takes a couple minutes. Needed on
 `$PATH`: `git`, `node`+`npm`, `rg` (ripgrep, fzf.vim's default source), `yazi`, `lazygit`.
 
@@ -179,9 +172,6 @@ with the exact text from copilot.vim's own docs instead.
   up automatically, no manual `require` needed.
 - Add a keymap/option that isn't plugin-specific: `lua/config/keymaps.lua` / `options.lua`.
 - Reload: restart Neovim (no `:source %`-style live reload convention here yet).
-- When porting anything else from the vimscript build (`/home/serii/Documents/Apps/nvim`),
-  check for CoC-specific bindings/settings first — those don't have a 1:1 equivalent here and
-  need a native-LSP or conform.nvim replacement instead of a direct port.
 
 ## Known machine-specific bits
 
