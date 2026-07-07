@@ -124,6 +124,43 @@ return {
           { name = "buffer" },
           { name = "path" },
         }),
+        -- Snippet entries float to the top and Text entries (the buffer
+        -- source's word-matches, labeled "Text" in the popup) sink to the
+        -- bottom, regardless of what the default score-based ordering would
+        -- pick -- everything else keeps cmp's normal comparator chain.
+        sorting = {
+          comparators = {
+            function(entry1, entry2)
+              local kind1 = entry1:get_kind()
+              local kind2 = entry2:get_kind()
+              local snippet_kind = cmp.lsp.CompletionItemKind.Snippet
+              if kind1 == snippet_kind and kind2 ~= snippet_kind then
+                return true
+              elseif kind2 == snippet_kind and kind1 ~= snippet_kind then
+                return false
+              end
+            end,
+            function(entry1, entry2)
+              local kind1 = entry1:get_kind()
+              local kind2 = entry2:get_kind()
+              local text_kind = cmp.lsp.CompletionItemKind.Text
+              if kind1 == text_kind and kind2 ~= text_kind then
+                return false
+              elseif kind2 == text_kind and kind1 ~= text_kind then
+                return true
+              end
+            end,
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.locality,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
+        },
       })
     end,
   },
