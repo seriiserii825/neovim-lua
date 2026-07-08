@@ -154,7 +154,8 @@ with the exact text from copilot.vim's own docs instead.
   *after* `keys/map-nvim.vim`, so they win over that file's own `<leader>w`/`<leader>z`):
   `<S-h>/<S-l>` cycle buffers, `<M-S-h>/<M-S-l>` move buffer, `<leader>1..0` go to buffer N,
   `<leader>qr/qa/qo` close right/others/all-but-current, `<leader>w` save **all** buffers
-  (`:wa`), `<leader>z` save-and-quit (`:wq`), `<leader>bo` `:only`, `<leader>br` reload current
+  (`:wa`), `<leader>z` quit-all (`:qa`, refuses if any buffer has unsaved changes), `<leader>bo`
+  `:only`, `<leader>br` reload current
   buffer from disk keeping cursor position. The trailing-double-space cleanup that used to be
   `<leader>z` in `map-nvim.vim` (shadowed there too) lives at `<leader>zs` here.
 - **Direct (no-leader) fenced-code-block mappings** (vim-surround based, count-prefixable):

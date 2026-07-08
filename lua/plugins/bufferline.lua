@@ -48,7 +48,9 @@ return {
       -- over map-nvim.vim's own <leader>w/<leader>z (see keymaps.lua note).
       map("n", "<leader>w", ":wa<CR>", { silent = true })
       map("n", "<leader>bo", ":only<CR>", { silent = true })
-      map("n", "<leader>z", ":wq<CR>", { silent = true })
+      -- :qa (not :wq) so it refuses to quit if any buffer has unsaved changes,
+      -- instead of silently saving the current one and exiting anyway
+      map("n", "<leader>z", ":qa<CR>", { silent = true })
 
       for i = 1, 9 do
         map("n", "<leader>" .. i, "<cmd>BufferLineGoToBuffer " .. i .. "<CR>")

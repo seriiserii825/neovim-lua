@@ -1,10 +1,5 @@
 local map = vim.keymap.set
 
--- <leader>w and <leader>z are set in bufferline.lua (:wa and :wq) -- that's
--- what's actually active in the vimscript build, since bufferline.vim is
--- sourced after this file's vimscript equivalent (keys/map-nvim.vim) and wins.
-map("n", "<leader>q", ":q<CR>")
-
 map("n", "<C-h>", "<C-w>h")
 map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
