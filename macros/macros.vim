@@ -40,8 +40,8 @@ function! MacroCopyClassToScss()
       execute l:winnr . 'wincmd w'
       let l:insert_after = line('$') - 1
       call append(l:insert_after, ['  &__' . l:suffix . ' {', '    ', '  }'])
-      call cursor(l:insert_after + 2, 1)
-      startinsert!
+      let l:target = l:insert_after + 2
+      call timer_start(0, {-> execute('call cursor(' . l:target . ', 1) | startinsert!')})
       return
     endif
   endfor
