@@ -39,8 +39,8 @@ function! MacroCopyClassToScss()
     if bufname(winbufnr(l:winnr)) =~# '\.scss$'
       execute l:winnr . 'wincmd w'
       let l:insert_after = line('$') - 1
-      call append(l:insert_after, ['', '  &__' . l:suffix . ' {', '    ', '  }'])
-      call cursor(l:insert_after + 3, 1)
+      call append(l:insert_after, ['  &__' . l:suffix . ' {', '    ', '  }'])
+      call cursor(l:insert_after + 2, 1)
       startinsert!
       return
     endif
