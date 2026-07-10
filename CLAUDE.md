@@ -50,11 +50,38 @@ auto-loads every spec under `lua/plugins/*.lua`.
 - `UltiSnips/*.snippets` — same byte-for-byte-copy approach as `macros/`, copied from the
   vimscript build's `UltiSnips/` once. Not symlinked/synced automatically — if you add/edit a
   snippet in one build, copy it over manually to keep them in sync.
+  - **Cross-file trigger collisions** (e.g. `vue.snippets` and `html.snippets` both defining
+    `dv`/`dvi`/`dvv`, or `scss.snippets` and `css.snippets` both defining `dfc`) throw
+    UltiSnips' ambiguous "Confirm" chooser even when the buffer's own `&filetype` is the more
+    specific one (`vue`, `scss`) — some other loaded `.snippets` file's same-named trigger
+    still gets pulled in and tied for priority (root mechanism not fully pinned down; not a
+    simple filetype-hierarchy `extends` chain — `vue.snippets`/`scss.snippets` only `extends
+    css, scss`, not `html`). Fix: add a `priority 1` line near the top of the more-specific
+    file (default priority is 0 for every `.snippets` file) — UltiSnips silently keeps only the
+    highest-priority match on a tie, no chooser. Already applied to `vue.snippets` and
+    `scss.snippets`; apply the same to any other file pair that hits this.
 
 ### LSP & formatting
 
 - **LSP**: `mason.nvim` + `mason-lspconfig.nvim` + `nvim-lspconfig`, configured for:
-  - `ts_ls` (TypeScript/JavaScript) — plain defaults.
+  - `ts_ls` (TypeScript/JavaScript) — plain defaults. Also attaches to `*.vue` files (with the
+    `@vue/typescript-plugin` loaded via `init_options.plugins`) since `vue_ls` only handles the
+    template/CSS side of `*.vue` files and forwards all `<script>` TS requests to this server —
+    nvim-lspconfig's bundled `vue_ls` "hybrid mode" `on_init` wires the forwarding.
+  - `vue_ls` (Vue 3) — known failure mode: it can crash on startup with `TypeError: Cannot read
+    properties of undefined (reading 'protocol')` in `@vue/language-server`'s `server.js`
+    (`Client vue_ls quit with exit code 1`, check `~/.local/state/nvim/lsp.log`). Cause: Volar
+    (`@vue/language-server`) declares `peerDependencies: { typescript: "*" }` with no upper
+    bound, so mason's npm install grabs whatever `typescript@latest` is *at install time* —
+    once that's a major far ahead of what Volar was actually tested against (e.g. TypeScript 7,
+    a from-scratch rewrite), its bundled `typescript` package no longer has the `ts.server.protocol`
+    namespace Volar's hybrid-mode bridge code expects, and it throws instead of degrading. Fix:
+    pin an older `typescript` inside vue-language-server's own install —
+    `cd ~/.local/share/nvim/mason/packages/vue-language-server/node_modules/@vue/language-server
+    && npm install typescript@5 --no-save` — then restart Neovim. This is a point patch, not
+    persistent: `:MasonUpdate`/reinstalling `vue-language-server` wipes it and npm will grab
+    `latest` again until upstream Volar caps its `typescript` peer dependency; just re-run the
+    same `npm install typescript@5 --no-save` if the crash comes back after a mason update.
   - `angularls` (Angular) — uses nvim-lspconfig's *default* `cmd` resolution (don't override
     it) — it walks the real `ngserver` binary path to find `@angular/language-service`, which
     under mason's npm install ends up nested at
