@@ -1,4 +1,9 @@
 extends css, scss
+# html.snippets' triggers (dv, dvi, dvv, ...) also load for .vue buffers and
+# collide with this file's own versions, throwing UltiSnips' ambiguous
+# "Confirm" chooser. Default priority is 0 for every snippets file, so
+# bumping this one makes ties resolve to vue's own definition silently.
+priority 1
 snippet vdo "video tag" b
 <video class="page-intro__bg" muted loop autoplay playsinline>
   <source :src="`${$1video}?ngsw-bypass=true`" type="video/mp4" />

@@ -1,4 +1,9 @@
 extends css, scss
+# css.snippets' triggers (dfc, ...) also load here and collide with this
+# file's own versions, throwing UltiSnips' ambiguous "Confirm" chooser.
+# Default priority is 0 for every snippets file, so bumping this one makes
+# ties resolve to scss's own definition silently.
+priority 1
 
 snippet z1 "z index 1" b
 z-index: 1;
@@ -232,12 +237,6 @@ endsnippet
 
 snippet vac "var(--contrast)"
 var(--contrast$1)$2
-endsnippet
-
-snippet dfc "dfc"
-display: flex;
-justify-content: center;
-align-items: center;
 endsnippet
 
 snippet trf "trf"

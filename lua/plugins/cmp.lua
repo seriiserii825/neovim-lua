@@ -56,6 +56,15 @@ return {
       end
 
       cmp.setup({
+        -- nvim-cmp defaults completeopt to "...,noselect", so the popup opens
+        -- with nothing highlighted until <C-j>/<C-k> is pressed. coc's pum.vim
+        -- auto-highlights the first candidate as soon as the menu appears;
+        -- dropping "noselect" (keeping "noinsert") matches that -- first entry
+        -- is pre-selected for visual/confirm purposes, but its text isn't
+        -- spliced into the buffer until confirmed.
+        completion = {
+          completeopt = "menu,menuone,noinsert",
+        },
         snippet = {
           expand = function(args)
             vim.fn["UltiSnips#Anon"](args.body)
