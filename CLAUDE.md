@@ -121,8 +121,13 @@ included) if you answer it mid-insert. `cmp.lua` patches `cmpu_source.execute` a
 `cmp_nvim_ultisnips.source` to instead delete the just-inserted trigger text and expand the
 already-resolved `completion_item.snippet.value` directly via `UltiSnips#Anon` — no re-matching,
 no ambiguity, no popup. Popup navigation is on `<C-j>`/`<C-k>` (matching the CoC build's
-`coc#pum#next/prev`), not `<Tab>` — `<Tab>` confirms the selected candidate immediately, or falls
-back to `UltiSnips#JumpForwards` for already-expanded placeholders, or a literal tab.
+`coc#pum#next/prev`), not `<Tab>` — `<Tab>` checks `UltiSnips#CanJumpForwards` *before*
+`cmp.visible()`, so it jumps to the next tabstop of an already-active snippet first, only
+falling back to confirming the selected completion candidate (or a literal tab) when no snippet
+is active. This order matters: checking `cmp.visible()` first used to let stray completions
+(e.g. emmet_language_server suggesting a full `<h2></h2>` while you're mid-edit on a tabstop
+like `dv`'s tag-name `$1`) hijack `<Tab>` and splice themselves into the snippet instead of
+jumping to `$2`.
 
 **`copilot#Accept()` (bound to `<C-l>`, insert mode) must stay a real vimscript `:imap`,
 not a `vim.keymap.set` Lua string.** Its return value is a raw keystroke sequence

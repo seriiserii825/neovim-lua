@@ -93,22 +93,26 @@ return {
               fallback()
             end
           end, { "i", "s" }),
-          -- Tab never calls UltiSnips#ExpandSnippet directly: with triggers like
-          -- "v" and "dv" both defined, UltiSnips can't tell which one you mean
-          -- from raw suffix matching and throws up a "Confirm" chooser. Going
-          -- through cmp's own (prefix-filtered, unambiguous) candidate list and
-          -- confirming it instead sidesteps that -- and the source:execute()
-          -- patch above ensures *confirming* doesn't quietly reintroduce the
-          -- same ambiguity underneath.
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.confirm({ select = true })
-            elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-              vim.fn["UltiSnips#JumpForwards"]()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
+          -- <Tab> is deliberately NOT bound here -- it's left to fall through
+          -- natively to UltiSnips' own <expr> mapping (g:UltiSnipsExpandTrigger
+          -- / JumpForwardTrigger = "<Tab>", set in ultisnips.lua), exactly like
+          -- the old coc.nvim build (modules/coc.vim there confirms its popup on
+          -- <CR>/<C-j>/<C-n>, never <Tab>; UltiSnips owns <Tab> outright).
+          --
+          -- An earlier version of this config routed <Tab> through cmp.confirm
+          -- instead, reasoning that UltiSnips' raw suffix-matching can't always
+          -- tell "v" from "dv" and throws up an ambiguous "Confirm" chooser.
+          -- That's real but rare and harmless (pick a number, move on). Routing
+          -- through cmp to dodge it was much worse: while editing a snippet's
+          -- $1 (e.g. dv's "div" tag-name placeholder), typing text that also
+          -- happens to match another completion source's candidate -- notably
+          -- emmet_language_server offering a full "<h2></h2>" for "h2" -- made
+          -- cmp.visible() true, and <Tab> confirmed *that* instead of jumping
+          -- to $2, silently splicing the emmet expansion into the middle of
+          -- the snippet instead of jumping tabstops. Since UltiSnips' own
+          -- ambiguity chooser only fires on genuine trigger collisions (a
+          -- handful of snippets), while cmp's popup opens on nearly every
+          -- keystroke, native <Tab> is the safer default.
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
               vim.fn["UltiSnips#JumpBackwards"]()

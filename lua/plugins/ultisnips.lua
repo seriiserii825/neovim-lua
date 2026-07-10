@@ -10,14 +10,40 @@ return {
     -- before this ever matters.
     event = "InsertEnter",
     init = function()
-      -- Tab/S-Tab are driven entirely through nvim-cmp (see cmp.lua). No native
-      -- <Tab> expand trigger here on purpose: UltiSnips' own raw expand uses
-      -- ambiguous suffix matching (e.g. triggers "v" and "dv" both match) and
-      -- throws up a blocking "Confirm" chooser. cmp's own prefix-filtered
-      -- candidate list sidesteps that -- but only if nothing else claims <Tab>
-      -- first, so it must stay unbound here.
-      vim.g.UltiSnipsExpandTrigger = "<nop>"
+      -- <Tab> is UltiSnips' own native trigger for both expand and jump-
+      -- forward, same as the old coc.nvim build (modules/ulti-snippets.vim
+      -- there). cmp.lua deliberately does NOT claim <Tab> for its own popup
+      -- confirmation -- see the comment by nvim-cmp's mapping table for why
+      -- that combination used to let stray completions (e.g. honza/vim-
+      -- snippets' generic "h3" trigger) hijack <Tab> and corrupt an
+      -- in-progress snippet.
+      --
+      -- g:UltiSnipsJumpOrExpandTrigger (NOT plain Expand+JumpForward set to
+      -- the same key) is what actually matters here. UltiSnips'
+      -- map_keys.vim picks the bound function by which globals exist:
+      --   - only Expand/JumpForward set (even if equal) -> binds
+      --     ExpandSnippetOrJump(), which calls _try_expand() FIRST and only
+      --     falls back to _jump() if that fails.
+      --   - JumpOrExpandTrigger set -> binds JumpOrExpandSnippet(), which
+      --     calls _jump() FIRST and only falls back to _try_expand().
+      -- With plain Expand/JumpForward (the first case), being mid-snippet on
+      -- dv's $1 tag-name tabstop and typing "h3" made <Tab> try a fresh
+      -- expand before checking whether a jump was possible -- and honza/
+      -- vim-snippets (a dependency here, see below) ships its own generic
+      -- "h3"/"h3."/"h3#" triggers matching that text exactly, so it expanded
+      -- THAT in place of jumping to $2, splicing "<h3></h3>" into the
+      -- snippet. JumpOrExpandTrigger fixes this by checking "am I already
+      -- mid-snippet with somewhere to jump" first, which is what the old
+      -- coc.nvim build's coc-snippets wrapper (g:coc_snippet_next = '<tab>')
+      -- effectively did too -- it's an active-session-aware jump, not a
+      -- fresh expand attempt.
+      vim.g.UltiSnipsExpandTrigger = "<Tab>"
       vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
+      vim.g.UltiSnipsJumpOrExpandTrigger = "<Tab>"
+      -- Deliberately NOT <S-Tab>: cmp.lua binds a real <S-Tab> insert-mode
+      -- keymap that calls UltiSnips#CanJumpBackwards/JumpBackwards directly,
+      -- so backward-jump already works without a native trigger on the same
+      -- key -- setting both would race two competing keymaps for <S-Tab>.
       vim.g.UltiSnipsJumpBackwardTrigger = "<S-b>"
 
       -- UltiSnips/ in this repo is a byte-for-byte copy of the vimscript
